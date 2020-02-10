@@ -52,13 +52,13 @@ pub fn get_attestation_deltas(
         || !dice.throw_dice(config.probability_online)
         || !dice.throw_dice(config.probability_honest)
     {
-        deltas.ffg_penalty += 3 * base_reward;
+        deltas.head_ffg_penalty += 3 * base_reward;
     } else {
         // HACK
         // avoid integer overflows by "shaving" both balances
         let mb = matching_balance / 1000;
         let tab = total_active_balance / 1000;
-        deltas.ffg_reward += 3 * base_reward * mb / tab;
+        deltas.head_ffg_reward += 3 * base_reward * mb / tab;
     }
 
     // inclusion reward

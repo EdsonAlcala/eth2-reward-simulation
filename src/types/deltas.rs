@@ -7,14 +7,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 pub struct Deltas {
-    pub ffg_reward: u64,
-    pub ffg_penalty: u64,
-
+    pub head_ffg_reward: u64,
+    pub head_ffg_penalty: u64,
     /*
-    ffg_target_reward: u64,
-    ffg_target_penalty: u64,
-    lmd_head_reward: u64,
-    lmd_head_penalty: u64,
+
     proposer_reward: u64,
     attester_reward: u64,
     inactivity_penalty: u64,
@@ -24,13 +20,10 @@ pub struct Deltas {
 impl Deltas {
     pub fn new() -> Deltas {
         Deltas {
-            ffg_reward: 0,
-            ffg_penalty: 0,
+            head_ffg_reward: 0,
+            head_ffg_penalty: 0,
             /*
-            ffg_target_reward: 0,
-            ffg_target_penalty: 0,
-            lmd_head_reward: 0,
-            lmd_head_penalty: 0,
+
             proposer_reward: 0,
             attester_reward: 0,
             inactivity_penalty: 0,

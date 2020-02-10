@@ -23,12 +23,12 @@ impl Output {
 
     pub fn print(&self, mode: &str) {
         if mode == "csv" {
-            println!("epoch number; FFG rewards; FFG penalties;");
+            println!("epoch number; head/ffg rewards; head/ffg penalties;");
 
             for row in &self.rows {
                 println!(
                     "{};{};{};",
-                    row.epoch_number, row.deltas_ffg_rewards, row.deltas_ffg_penalties
+                    row.epoch_number, row.deltas_head_ffg_rewards, row.deltas_head_ffg_penalties
                 );
             }
         }
@@ -38,8 +38,8 @@ impl Output {
 #[derive(Copy, Clone)]
 pub struct OutputRow {
     pub epoch_number: i32,
-    pub deltas_ffg_rewards: u64,
-    pub deltas_ffg_penalties: u64,
+    pub deltas_head_ffg_rewards: u64,
+    pub deltas_head_ffg_penalties: u64,
     /*
 
     pub deltas_proposer: u64,
@@ -60,8 +60,8 @@ impl OutputRow {
     pub fn new() -> OutputRow {
         OutputRow {
             epoch_number: 0,
-            deltas_ffg_rewards: 0,
-            deltas_ffg_penalties: 0,
+            deltas_head_ffg_rewards: 0,
+            deltas_head_ffg_penalties: 0,
 
             /*
                     deltas_ffg_target: 0,
@@ -82,7 +82,7 @@ impl OutputRow {
     }
 
     pub fn update(&mut self, deltas: &Deltas) {
-        self.deltas_ffg_rewards += deltas.ffg_reward;
-        self.deltas_ffg_penalties += deltas.ffg_penalty;
+        self.deltas_head_ffg_rewards += deltas.head_ffg_reward;
+        self.deltas_head_ffg_penalties += deltas.head_ffg_penalty;
     }
 }
