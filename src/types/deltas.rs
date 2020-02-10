@@ -7,8 +7,9 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 pub struct Deltas {
-    pub ffg_source_reward: u64,
-    pub ffg_source_penalty: u64,
+    pub ffg_reward: u64,
+    pub ffg_penalty: u64,
+
     /*
     ffg_target_reward: u64,
     ffg_target_penalty: u64,
@@ -23,8 +24,8 @@ pub struct Deltas {
 impl Deltas {
     pub fn new() -> Deltas {
         Deltas {
-            ffg_source_reward: 0,
-            ffg_source_penalty: 0,
+            ffg_reward: 0,
+            ffg_penalty: 0,
             /*
             ffg_target_reward: 0,
             ffg_target_penalty: 0,

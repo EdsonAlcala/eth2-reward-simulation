@@ -14,8 +14,8 @@ fn main() {
     let mut state = State::new();
     let mut output = Output::new();
 
-    for _ in 0..state.config.epochs {
-        state = process_epoch(state, &mut output);
+    for i in 0..state.config.epochs {
+        state = process_epoch(state, i, &mut output);
     }
 
     output.print();

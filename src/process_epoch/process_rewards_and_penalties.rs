@@ -40,7 +40,9 @@ pub fn get_attestation_deltas(
     }
 
     // we will check now, if
-    //   - the validator is slashed (property
+
+    //   - the validator is slashed (property)
+
     //   - the validator was online when it had to vote (probability)
     //   - the validator is behaving honestly (probability)
     // if any of the conditions above is true, we penalize the validators
@@ -52,17 +54,13 @@ pub fn get_attestation_deltas(
         || !dice.throw_dice(config.probability_online)
         || !dice.throw_dice(config.probability_honest)
     {
-        deltas.ffg_source_reward += 3 * base_reward;
+        deltas.ffg_penalty += 3 * base_reward;
     } else {
-        println!(
-            "{} {} {}",
-            base_reward, matching_balance, total_active_balance
-        );
         // HACK
-        // avoid overflows by "shaving" both balances
+        // avoid integer overflows by "shaving" both balances
         let mb = matching_balance / 1000;
         let tab = total_active_balance / 1000;
-        deltas.ffg_source_penalty += 3 * base_reward * mb / tab;
+        deltas.ffg_reward += 3 * base_reward * mb / tab;
     }
 
     // inclusion reward
