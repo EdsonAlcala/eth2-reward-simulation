@@ -23,7 +23,7 @@ impl Output {
 
     pub fn print(&self, mode: &str) {
         if mode == "csv" {
-            println!("epoch number;head/ffg rewards;head/ffg penalties;proposer rewards");
+            println!("epoch number;head/ffg rewards;head/ffg penalties;proposer rewards;");
 
             for row in &self.rows {
                 println!(
@@ -84,10 +84,6 @@ impl OutputRow {
     }
 
     pub fn update(&mut self, deltas: &Deltas) {
-        // DEBUG
-        //println!("{};{};", deltas.head_ffg_reward, deltas.head_ffg_penalty);
-        // DEBUG
-
         self.deltas_head_ffg_rewards += deltas.head_ffg_reward;
         self.deltas_head_ffg_penalties += deltas.head_ffg_penalty;
         self.deltas_proposer_rewards += deltas.proposer_reward;

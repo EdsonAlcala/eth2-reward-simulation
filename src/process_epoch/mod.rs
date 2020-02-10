@@ -43,10 +43,6 @@ pub fn process_epoch(pre_state: State, epoch_number: i32, output: &mut Output) -
     let mut dice = Dice::new();
     let proposer_indices = dice.pick_epoch_proposers(&pre_state);
 
-    // DEBUG
-    // println!("{:?}", proposer_indices);
-    // DEBUG
-
     for (validator_index, validator) in pre_state.validators.iter().enumerate() {
         let base_reward = validator.get_base_reward(total_active_balance);
 

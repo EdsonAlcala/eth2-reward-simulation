@@ -78,4 +78,7 @@ pub fn get_attestation_deltas(
     if proposer_indices.contains(validator_index) {
         deltas.proposer_reward = proposer_reward_amount;
     }
+
+    // ACA VOY
+    // attester reward!
 }
