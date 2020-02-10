@@ -58,7 +58,11 @@ pub fn get_attestation_deltas(
             "{} {} {}",
             base_reward, matching_balance, total_active_balance
         );
-        deltas.ffg_source_penalty += base_reward * matching_balance / total_active_balance;
+        // HACK
+        // avoid overflows by "shaving" both balances
+        let mb = matching_balance / 1000;
+        let tab = total_active_balance / 1000;
+        deltas.ffg_source_penalty += 3 * base_reward * mb / tab;
     }
 
     // inclusion reward
