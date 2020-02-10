@@ -9,9 +9,8 @@
 pub struct Deltas {
     pub head_ffg_reward: u64,
     pub head_ffg_penalty: u64,
+    pub proposer_reward: u64,
     /*
-
-    proposer_reward: u64,
     attester_reward: u64,
     inactivity_penalty: u64,
     */
@@ -22,9 +21,8 @@ impl Deltas {
         Deltas {
             head_ffg_reward: 0,
             head_ffg_penalty: 0,
-            /*
-
             proposer_reward: 0,
+            /*
             attester_reward: 0,
             inactivity_penalty: 0,
             */

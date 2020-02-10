@@ -17,11 +17,12 @@ use crate::types::*;
 
 pub fn get_attestation_deltas(
     validator: &Validator,
+    validator_index: &usize,
+    base_reward: u64,
     config: &Config,
     total_active_balance: u64,
     matching_balance: u64,
     proposer_indices: &Vec<usize>,
-    base_reward: u64,
     deltas: &mut Deltas,
 ) {
     // load our random component
@@ -72,15 +73,9 @@ pub fn get_attestation_deltas(
     //         in the specifications validators with low effective balance
     //         get lower chances to be elected.
 
-    /*
-    let proposer_reward_amount = base_reward / PROPOSER_REWARD_QUOTIENT;
-    if validator.proposer {
-        validator.increase_balance(proposer_reward_amount);
-        // reset the flag!
-        validator.proposer = false;
+    let proposer_reward_amount = base_reward / config.proposer_reward_quotient;
 
-        println!("Did it!")
+    if proposer_indices.contains(validator_index) {
+        deltas.proposer_reward = proposer_reward_amount;
     }
-
-    */
 }

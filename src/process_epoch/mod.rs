@@ -47,18 +47,19 @@ pub fn process_epoch(pre_state: State, epoch_number: i32, output: &mut Output) -
     // println!("{:?}", proposer_indices);
     // DEBUG
 
-    for validator in pre_state.validators {
+    for (validator_index, validator) in pre_state.validators.iter().enumerate() {
         let base_reward = validator.get_base_reward(total_active_balance);
 
         // SPEC: process_rewards_and_penalties
         let mut deltas = Deltas::new();
         get_attestation_deltas(
             &validator,
+            &validator_index,
+            base_reward,
             &pre_state.config,
             total_active_balance,
             matching_balance,
             &proposer_indices,
-            base_reward,
             &mut deltas,
         );
         // apply_deltas() // TODO
