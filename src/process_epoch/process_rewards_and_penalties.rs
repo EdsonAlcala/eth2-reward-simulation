@@ -13,7 +13,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-use super::dice::Dice;
 use crate::types::*;
 
 pub fn get_attestation_deltas(
@@ -21,13 +20,12 @@ pub fn get_attestation_deltas(
     config: &Config,
     total_active_balance: u64,
     matching_balance: u64,
+    proposer_indices: &Vec<usize>,
     base_reward: u64,
     deltas: &mut Deltas,
 ) {
     // load our random component
     let mut dice = Dice::new();
-
-    // DEBUG
 
     // simulate the eligibility check.
     // SPEC:

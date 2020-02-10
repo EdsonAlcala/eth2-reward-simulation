@@ -82,6 +82,10 @@ impl OutputRow {
     }
 
     pub fn update(&mut self, deltas: &Deltas) {
+        // DEBUG
+        //println!("{};{};", deltas.head_ffg_reward, deltas.head_ffg_penalty);
+        // DEBUG
+
         self.deltas_head_ffg_rewards += deltas.head_ffg_reward;
         self.deltas_head_ffg_penalties += deltas.head_ffg_penalty;
     }

@@ -19,7 +19,6 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-mod dice;
 mod process_rewards_and_penalties;
 
 use std::time::Instant;
@@ -40,6 +39,14 @@ pub fn process_epoch(pre_state: State, epoch_number: i32, output: &mut Output) -
     let total_active_balance = pre_state.get_total_active_balance();
     let matching_balance = pre_state.get_matching_balance();
 
+    // pick the 32 block proposers
+    let mut dice = Dice::new();
+    let proposer_indices = dice.pick_epoch_proposers(&pre_state);
+
+    // DEBUG
+    // println!("{:?}", proposer_indices);
+    // DEBUG
+
     for validator in pre_state.validators {
         let base_reward = validator.get_base_reward(total_active_balance);
 
@@ -50,6 +57,7 @@ pub fn process_epoch(pre_state: State, epoch_number: i32, output: &mut Output) -
             &pre_state.config,
             total_active_balance,
             matching_balance,
+            &proposer_indices,
             base_reward,
             &mut deltas,
         );
