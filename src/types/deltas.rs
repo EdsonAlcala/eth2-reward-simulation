@@ -9,6 +9,7 @@
 pub struct Deltas {
     pub ffg_reward: u64,
     pub ffg_penalty: u64,
+
     /*
     ffg_target_reward: u64,
     ffg_target_penalty: u64,

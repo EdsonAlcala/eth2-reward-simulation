@@ -29,10 +29,12 @@ impl Output {
 
 #[derive(Copy, Clone)]
 pub struct OutputRow {
+
     pub epoch_number: i32,
     pub deltas_ffg_rewards: u64,
     pub deltas_ffg_penalties: u64,
     /*
+
     pub deltas_proposer: u64,
     pub deltas_attester: u64,
     pub deltas_inactivity: u64,
@@ -50,9 +52,11 @@ pub struct OutputRow {
 impl OutputRow {
     pub fn new() -> OutputRow {
         OutputRow {
+
             epoch_number: 0,
             deltas_ffg_rewards: 0,
             deltas_ffg_penalties: 0,
+
 
             /*
                     deltas_ffg_target: 0,
@@ -73,7 +77,9 @@ impl OutputRow {
     }
 
     pub fn update(&mut self, deltas: &Deltas) {
+
         self.deltas_ffg_rewards += deltas.ffg_reward;
         self.deltas_ffg_penalties += deltas.ffg_penalty;
+
     }
 }

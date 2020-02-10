@@ -31,6 +31,7 @@ pub fn process_epoch(pre_state: State, epoch_number: i32, output: &mut Output) -
     // start to record
     let mut output_row = OutputRow::new();
     output_row.epoch_number = epoch_number;
+
     let epoch_processing_start = Instant::now();
 
     let mut post_state_validators = vec![];
