@@ -1,16 +1,8 @@
 
+### Rewards and Penalties Simulator for Ethereum 2.0
 
+#### TODO!
 
-=================================
-
-### TODO!
-
-* REFACTOR
-
-^^^^ 
-
--------
-* You need to have deltas instead of just adding, to show. Maybe?
 * add histeriesis on effective balances
   * https://github.com/ethereum/eth2.0-specs/blob/dev/specs/phase0/beacon-chain.md#final-updates
 * Do the csv for just the 3 ffg rewards -> have some output already!
@@ -24,13 +16,9 @@
 * have a mechanism to remove slashed validators over time
 * move this todo in this very file
 * add running instructions for the sim
-* Edit this README -? This is a busy people / repository
-* Do the blogpost, delete the busy people in the `kb` repo
+* Edit this README
+* Do the blogpost
   * https://docs.google.com/document/d/10_z2YudaBBWfqgIFAip44TA6PJ049R0NPAyAsGBsMH8/edit
-
-=================================
-
-
 
 #### Contents
 

@@ -18,5 +18,5 @@ fn main() {
         state = process_epoch(state, i, &mut output);
     }
 
-    output.print();
+    output.print("csv");
 }

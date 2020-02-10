@@ -40,11 +40,9 @@ pub fn get_attestation_deltas(
     }
 
     // we will check now, if
-
     //   - the validator is slashed (property)
-
-    //   - the validator was online when it had to vote (probability)
-    //   - the validator is behaving honestly (probability)
+    //   - the validator was offline when it had to vote (probability)
+    //   - the validator is not behaving honestly (probability)
     // if any of the conditions above is true, we penalize the validators
     // otherwise, we assume it is behaving honestly and error-free,
     //   and reward it for correct FFG source, FFG target and head.
