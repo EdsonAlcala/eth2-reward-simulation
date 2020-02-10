@@ -19,6 +19,7 @@
 * Edit this README
 * Do the blogpost
   * https://docs.google.com/document/d/10_z2YudaBBWfqgIFAip44TA6PJ049R0NPAyAsGBsMH8/edit
+* Add ETHUSD as parameter and then return reward in USD
 
 #### Contents
 
