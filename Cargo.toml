@@ -1,0 +1,11 @@
+[package]
+name = "rs"
+version = "0.1.0"
+authors = ["Herman Alonso Junge <alonso.junge@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+integer-sqrt = "0.1.2"
+rand = "0.6.0"
