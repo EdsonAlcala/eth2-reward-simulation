@@ -84,6 +84,10 @@ impl OutputRow {
     }
 
     pub fn update(&mut self, deltas: &Deltas) {
+        if false {
+            println!("{}", deltas);
+        }
+
         self.deltas_head_ffg_rewards += deltas.head_ffg_reward;
         self.deltas_head_ffg_penalties += deltas.head_ffg_penalty;
         self.deltas_proposer_rewards += deltas.proposer_reward;

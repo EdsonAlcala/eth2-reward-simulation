@@ -6,6 +6,8 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+use std::fmt;
+
 pub struct Deltas {
     pub head_ffg_reward: u64,
     pub head_ffg_penalty: u64,
@@ -27,5 +29,19 @@ impl Deltas {
             inactivity_penalty: 0,
             */
         }
+    }
+}
+
+impl fmt::Display for Deltas {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        // Write strictly the first element into the supplied output
+        // stream: `f`. Returns `fmt::Result` which indicates whether the
+        // operation succeeded or failed. Note that `write!` uses syntax which
+        // is very similar to `println!`.
+        write!(
+            f,
+            "{};{};{}",
+            self.head_ffg_reward, self.head_ffg_penalty, self.proposer_reward
+        )
     }
 }
