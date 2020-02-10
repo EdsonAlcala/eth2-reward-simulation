@@ -16,62 +16,7 @@
 * have a mechanism to remove slashed validators over time
 * move this todo in this very file
 * add running instructions for the sim
-* Edit this README
+* Edit this README (Actually, write it)
 * Do the blogpost
   * https://docs.google.com/document/d/10_z2YudaBBWfqgIFAip44TA6PJ049R0NPAyAsGBsMH8/edit
 * Add ETHUSD as parameter and then return reward in USD
-
-#### Contents
-
-* Running this simulation
-* [Rewards and penalties on Eth2 for busy people](#rewards-and-penalties-on-eth2)
-* Notes
-
-#### Rewards and penalties on Eth2
-
-* Rewards and Penalties are computed at the first [slot](#slot) of each [epoch](#epoch) (except at genesis!).
-
-##### FFG rewards
-
-* ???
-
-##### Proposer and attester rewards
-
-* ???
-
-##### Penalties
-
-* ???
-
---------------------------------------------------------------------------------
-
-## Running a simulation
-
-### Overview
-
-* ???
-
-### The gauges
-
-* ???
-
-### Links for the simulation
-
-* TODO: Add gist code here
-
-### An annotated spreadsheet with results
-
-* ???
-
-
-## Notes
-
-* _Caveat Lector_. While this reference is being written on 07.FEB.2020, it risks being obsolete in the future!
-* Thanks to the Pukara Team for reviewing: Edson Alcala, Sylvain Laurent, Tim Lowe.
-* Thanks for additional reviewing to @benjaminion.
-
-### Extra notes
-
-#### Chances to be a proposer
-
-* We check in a candidate validator for the ratio `effective_balance / MAX_EFFECTIVE_BALANCE` to be greater than a random number between 0 and 1. If the condition is not met, we recompute the candidate.
