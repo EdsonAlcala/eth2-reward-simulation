@@ -61,9 +61,8 @@ impl State {
     }
 
     pub fn get_matching_balance(&self) -> u64 {
-        // for the sake of simplicity, we assume that
-        // all active validators, less the slashed ones
-        // votes for the right source/target/head
+        // assumption
+        //   https://github.com/hermanjunge/eth2-reward-simulation/blob/master/assumptions.md#epoch-processing
         self.validators
             .iter()
             .map(|v: &Validator| {

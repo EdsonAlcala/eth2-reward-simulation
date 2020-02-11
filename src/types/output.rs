@@ -60,7 +60,6 @@ pub struct OutputRow {
 
     pub number_of_validators: u64,
     pub number_of_active_validators: u64,
-    pub number_of_ejected_validators: u64,
 
     pub total_balance: u64,
     pub total_effective_balance: u64,
@@ -82,7 +81,6 @@ impl OutputRow {
 
                     number_of_validators: 0,
                     number_of_active_validators: 0,
-                    number_of_ejected_validators: 0,
 
                     total_balance: 0,
                     total_effective_balance: 0,

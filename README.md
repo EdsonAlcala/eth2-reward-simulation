@@ -1,8 +1,12 @@
 
 ### Rewards and Penalties Simulator for Ethereum 2.0
 
+* [Simulation Assumptions](assumptions.md)
+
 #### TODO!
 
+* state transition
+* complete output
 * add histeriesis on effective balances
   * https://github.com/ethereum/eth2.0-specs/blob/dev/specs/phase0/beacon-chain.md#final-updates
 --------------------

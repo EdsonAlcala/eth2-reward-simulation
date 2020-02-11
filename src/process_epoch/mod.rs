@@ -2,20 +2,7 @@
 //
 // - simulates relevant `process_epoch` ops during the state transition
 //
-//   - process_epoch
-//     - process_justification_and_finalization
-//      - NOT SIMULATED
-//     - process_rewards_and_penalties
-//       - FFG rewards/penalties (source, target, and head)
-//       - proposer and attestator microincentives
-//       - inactivity penalty
-//     - process_registry_updates
-//         - exit due to EJECTION_BALANCE
-//     - process_slashings
-//       - NOT IMPLEMENTED
-//       - NOTE: We are omitting slasher whistleblower/proposal rewards (for now!)
-//     - process_final_updates
-//       - update effective balances with hysteresis
+//   https://github.com/hermanjunge/eth2-reward-simulation/blob/master/assumptions.md#epoch-processing
 //
 ////////////////////////////////////////////////////////////////////////////////
 
