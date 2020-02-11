@@ -5,6 +5,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 use super::deltas::Deltas;
+use std::env;
 
 pub struct Output {
     pub rows: Vec<OutputRow>,
@@ -23,15 +24,23 @@ impl Output {
 
     pub fn print(&self, mode: &str) {
         if mode == "csv" {
-            println!("epoch number;head/ffg rewards;head/ffg penalties;proposer rewards;");
+            println!(
+                "{};{};{};{};{};",
+                "epoch number".to_string(),
+                "head/ffg rewards".to_string(),
+                "head/ffg penalties".to_string(),
+                "proposer rewards".to_string(),
+                "attester rewards".to_string(),
+            );
 
             for row in &self.rows {
                 println!(
-                    "{};{};{};{};",
+                    "{};{};{};{};{};",
                     row.epoch_number,
                     row.deltas_head_ffg_rewards,
                     row.deltas_head_ffg_penalties,
                     row.deltas_proposer_rewards,
+                    row.deltas_attester_rewards,
                 );
             }
         }
@@ -44,9 +53,9 @@ pub struct OutputRow {
     pub deltas_head_ffg_rewards: u64,
     pub deltas_head_ffg_penalties: u64,
     pub deltas_proposer_rewards: u64,
+    pub deltas_attester_rewards: u64,
 
     /*
-    pub deltas_attester: u64,
     pub deltas_inactivity: u64,
 
     pub number_of_validators: u64,
@@ -66,10 +75,9 @@ impl OutputRow {
             deltas_head_ffg_rewards: 0,
             deltas_head_ffg_penalties: 0,
             deltas_proposer_rewards: 0,
+            deltas_attester_rewards: 0,
 
             /*
-                    deltas_proposer: 0,
-                    deltas_attester: 0,
                     deltas_inactivity: 0,
 
                     number_of_validators: 0,
@@ -84,12 +92,15 @@ impl OutputRow {
     }
 
     pub fn update(&mut self, deltas: &Deltas) {
-        if false {
+        let debug_output_row = !env::var("DEBUG_OUTPUT_ROW").is_err();
+
+        if debug_output_row {
             println!("{}", deltas);
         }
 
         self.deltas_head_ffg_rewards += deltas.head_ffg_reward;
         self.deltas_head_ffg_penalties += deltas.head_ffg_penalty;
         self.deltas_proposer_rewards += deltas.proposer_reward;
+        self.deltas_attester_rewards += deltas.attester_reward;
     }
 }

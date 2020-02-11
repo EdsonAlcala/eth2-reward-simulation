@@ -12,8 +12,8 @@ pub struct Deltas {
     pub head_ffg_reward: u64,
     pub head_ffg_penalty: u64,
     pub proposer_reward: u64,
+    pub attester_reward: u64,
     /*
-    attester_reward: u64,
     inactivity_penalty: u64,
     */
 }
@@ -24,8 +24,8 @@ impl Deltas {
             head_ffg_reward: 0,
             head_ffg_penalty: 0,
             proposer_reward: 0,
-            /*
             attester_reward: 0,
+            /*
             inactivity_penalty: 0,
             */
         }
@@ -40,8 +40,8 @@ impl fmt::Display for Deltas {
         // is very similar to `println!`.
         write!(
             f,
-            "{};{};{}",
-            self.head_ffg_reward, self.head_ffg_penalty, self.proposer_reward
+            "{};{};{};{};",
+            self.head_ffg_reward, self.head_ffg_penalty, self.proposer_reward, self.attester_reward,
         )
     }
 }

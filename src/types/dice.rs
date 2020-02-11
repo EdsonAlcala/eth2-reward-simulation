@@ -35,7 +35,6 @@ impl Dice {
             // TODO
             //     what do we do if we have less than `proposers_per_epoch`
             //     eligible validators in the set?
-
             if proposer_indices.len() == proposers_per_epoch {
                 break;
             }
@@ -49,8 +48,9 @@ impl Dice {
                 continue;
             }
 
+            // we apply the effective balance bias on proposer choosing
+            // as in https://github.com/ethereum/eth2.0-specs/blob/dev/specs/phase0/beacon-chain.md#compute_proposer_index
             let random_byte = self.rng.gen_range(0, 255);
-
             if state.validators[candidate_index].effective_balance * max_random_byte
                 >= random_byte * max_effective_balance
             {

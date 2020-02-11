@@ -54,6 +54,13 @@ impl State {
             .sum()
     }
 
+    pub fn get_total_active_validators(&self) -> u64 {
+        self.validators
+            .iter()
+            .map(|v: &Validator| if v.is_active { 1 } else { 0 })
+            .sum()
+    }
+
     pub fn get_matching_balance(&self) -> u64 {
         // for the sake of simplicity, we assume that
         // all active validators, less the slashed ones
