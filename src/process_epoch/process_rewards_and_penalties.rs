@@ -100,23 +100,3 @@ pub fn get_attestation_deltas(
             (maximum_attester_reward as f32 * config.exp_value_inclusion_prob).floor() as u64;
     }
 }
-
-//
-
-/*
-
-*/
-
-// (get_attester_inclusion_reward is memoized)
-// by the spec in `get_attestation_deltas`, the attestation inclusion reward
-// is (B - B/proposer_reward_quotient) / inclusion_delay
-// factoring, we have (B(PRQ - 1) / PRQ ) / inclusion_delay.
-//
-// If the probability to be included is p...
-
-/*
-        let aaa = base_reward
-            * (proposer_reward_quotient - 1)
-            * dice.get_attester_inclusion_reward(config.probability_online)
-            / proposer_reward_quotient;
-*/
