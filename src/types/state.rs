@@ -12,7 +12,6 @@ use super::validator::Validator;
 pub struct State {
     pub config: Config,
     pub validators: Vec<Validator>,
-    // TODO: The list for the proposers of this epoch
 }
 
 impl State {
@@ -65,9 +64,6 @@ impl State {
         // for the sake of simplicity, we assume that
         // all active validators, less the slashed ones
         // votes for the right source/target/head
-
-        // TODO: Shouldn't we multiply for the possibility
-        // of being online, less the malicious ones ??? TBD
         self.validators
             .iter()
             .map(|v: &Validator| {
