@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// - the state of the simulation
+// The state of the simulation
 //   - validators
 //   - config variables
 //
@@ -10,7 +10,9 @@ use super::config::Config;
 use super::validator::Validator;
 
 pub struct State {
+    // we keep the config at hand
     pub config: Config,
+
     pub validators: Vec<Validator>,
 }
 
@@ -23,7 +25,6 @@ impl State {
 
         for _ in 0..number_of_validators {
             validators.push(Validator {
-                // we just start with each validator active, non-slashed, and at 32 ETH
                 balance: config.max_effective_balance,
                 effective_balance: config.max_effective_balance,
 
@@ -61,7 +62,6 @@ impl State {
     }
 
     pub fn get_matching_balance(&self) -> u64 {
-        // assumptions.md#epoch-processing
         self.validators
             .iter()
             .map(|v: &Validator| {

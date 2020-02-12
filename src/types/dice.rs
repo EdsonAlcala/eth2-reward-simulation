@@ -31,7 +31,6 @@ impl Dice {
         let max_effective_balance = 32_000_000_000;
         let max_random_byte = 255;
 
-        // asusmptions.md#proposer-chosing
         if state.get_total_active_validators() < 32 {
             panic!("not enough active validators");
         }
@@ -50,7 +49,7 @@ impl Dice {
                 continue;
             }
 
-            // asusmptions.md#proposer-chosing
+            // effective balance bias on proposer election
             let random_byte = self.rng.gen_range(0, 255);
             if state.validators[candidate_index].effective_balance * max_random_byte
                 >= random_byte * max_effective_balance

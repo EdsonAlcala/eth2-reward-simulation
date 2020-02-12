@@ -1,8 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// - simulates relevant `process_epoch` ops during the state transition
-//
-//   assumptions.md#epoch-processing
+// Simulates relevant `process_epoch` ops during the state transition
 //
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -34,7 +32,7 @@ pub fn process_epoch(pre_state: State, epoch_number: i32, output: &mut Output) -
     for (validator_index, validator) in pre_state.validators.iter().enumerate() {
         let base_reward = validator.get_base_reward(total_active_balance);
 
-        // SPEC: process_rewards_and_penalties
+        // SPEC: process_rewards_and_penalties.get_attestation_deltas()
         let mut deltas = Deltas::new();
         get_attestation_deltas(
             &validator,
@@ -47,6 +45,8 @@ pub fn process_epoch(pre_state: State, epoch_number: i32, output: &mut Output) -
             &proposer_indices,
             &mut deltas,
         );
+
+        // SPEC: process_rewards_and_penalties
         // apply_deltas() // TODO
 
         // SPEC: process_registry_updates
