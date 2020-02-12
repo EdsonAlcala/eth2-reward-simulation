@@ -56,6 +56,7 @@ impl Config {
         }
     }
 
+    // assumptions.md#expected-value-of-the-inclusion-probability-tree
     fn get_exp_value_inclusion_prob(p: f32) -> f32 {
         p * p.ln() / (p - 1.00)
     }

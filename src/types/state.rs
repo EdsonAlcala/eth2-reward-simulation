@@ -61,8 +61,7 @@ impl State {
     }
 
     pub fn get_matching_balance(&self) -> u64 {
-        // assumption
-        //   https://github.com/hermanjunge/eth2-reward-simulation/blob/master/assumptions.md#epoch-processing
+        // assumptions.md#epoch-processing
         self.validators
             .iter()
             .map(|v: &Validator| {

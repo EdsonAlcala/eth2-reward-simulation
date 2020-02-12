@@ -2,7 +2,7 @@
 //
 // - simulates relevant `process_epoch` ops during the state transition
 //
-//   https://github.com/hermanjunge/eth2-reward-simulation/blob/master/assumptions.md#epoch-processing
+//   assumptions.md#epoch-processing
 //
 ////////////////////////////////////////////////////////////////////////////////
 
