@@ -4,12 +4,14 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-mod process_rewards_and_penalties;
+mod apply_deltas;
+mod get_attestation_deltas;
 
 use std::time::Instant;
 
 use crate::types::*;
-use process_rewards_and_penalties::*;
+use apply_deltas::*;
+use get_attestation_deltas::*;
 
 pub fn process_epoch(pre_state: State, epoch_number: i32, output: &mut Output) -> State {
     // start to record
@@ -47,10 +49,7 @@ pub fn process_epoch(pre_state: State, epoch_number: i32, output: &mut Output) -
         );
 
         // SPEC: process_rewards_and_penalties
-        // apply_deltas() // TODO
-
-        // SPEC: process_registry_updates
-        // TODO
+        let new_validator = apply_deltas(&validator, &deltas);
 
         // SPEC: process_final_updates
         // TODO
@@ -58,20 +57,20 @@ pub fn process_epoch(pre_state: State, epoch_number: i32, output: &mut Output) -
         // update values in output
         output_row.update(&deltas);
 
-        post_state_validators.push(Validator {
-            balance: 0,
-            effective_balance: 0,
-            is_active: false,
-            is_slashed: false,
-        });
+        post_state_validators.push(new_validator);
     }
 
-    // stop the timer, send the values to output
-    output_row.time_elapsed = epoch_processing_start.elapsed().as_nanos();
-    output.push(output_row);
-
-    State {
+    // build the new state and record its new totals
+    let post_state = State {
         config: pre_state.config,
         validators: post_state_validators,
-    }
+    };
+    output_row.total_staked_balance = post_state.get_total_staked_balance();
+    output_row.total_effective_balance = post_state.get_total_active_balance();
+
+    // stop the timer, send the values to output
+    output_row.time_elapsed = epoch_processing_start.elapsed().as_micros();
+    output.push(output_row);
+
+    post_state
 }

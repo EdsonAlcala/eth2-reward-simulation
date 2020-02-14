@@ -33,7 +33,7 @@ pub struct Config {
 impl Config {
     pub fn new() -> Config {
         // We want to get these values from the command line
-        let epochs = 1; // We want 82_125 = (60 * 60 * 24 * 365)/(12 * 32)
+        let epochs = 10; // We want 82_125 = (60 * 60 * 24 * 365)/(12 * 32)
         let probability_online: f32 = 0.9;
 
         // pre-computation

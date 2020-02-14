@@ -25,22 +25,28 @@ impl Output {
     pub fn print(&self, mode: &str) {
         if mode == "csv" {
             println!(
-                "{};{};{};{};{};",
+                "{},{},{},{},{},{},{},{}",
                 "epoch number".to_string(),
                 "head/ffg rewards".to_string(),
                 "head/ffg penalties".to_string(),
                 "proposer rewards".to_string(),
                 "attester rewards".to_string(),
+                "total staked balance".to_string(),
+                "total effective balance".to_string(),
+                "simul time (ms)".to_string(),
             );
 
             for row in &self.rows {
                 println!(
-                    "{};{};{};{};{};",
+                    "{},{},{},{},{},{},{},{}",
                     row.epoch_number,
                     row.deltas_head_ffg_rewards,
                     row.deltas_head_ffg_penalties,
                     row.deltas_proposer_rewards,
                     row.deltas_attester_rewards,
+                    row.total_staked_balance,
+                    row.total_effective_balance,
+                    row.time_elapsed,
                 );
             }
         }
@@ -55,15 +61,9 @@ pub struct OutputRow {
     pub deltas_proposer_rewards: u64,
     pub deltas_attester_rewards: u64,
 
-    /*
-    pub deltas_inactivity: u64,
-
-    pub number_of_validators: u64,
-    pub number_of_active_validators: u64,
-
-    pub total_balance: u64,
+    pub total_staked_balance: u64,
     pub total_effective_balance: u64,
-    */
+
     pub time_elapsed: u128,
 }
 
@@ -76,15 +76,9 @@ impl OutputRow {
             deltas_proposer_rewards: 0,
             deltas_attester_rewards: 0,
 
-            /*
-                    deltas_inactivity: 0,
+            total_staked_balance: 0,
+            total_effective_balance: 0,
 
-                    number_of_validators: 0,
-                    number_of_active_validators: 0,
-
-                    total_balance: 0,
-                    total_effective_balance: 0,
-            */
             time_elapsed: 0,
         }
     }

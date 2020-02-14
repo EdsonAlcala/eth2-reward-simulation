@@ -39,6 +39,10 @@ impl State {
         }
     }
 
+    pub fn get_total_staked_balance(&self) -> u64 {
+        self.validators.iter().map(|v: &Validator| v.balance).sum()
+    }
+
     pub fn get_total_active_balance(&self) -> u64 {
         self.validators
             .iter()

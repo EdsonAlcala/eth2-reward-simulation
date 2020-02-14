@@ -5,13 +5,9 @@
 
 #### TODO!
 
-* fix the elegibility assumption
-* state transition
--------------------------------------------------
-* edit the assumptions, polish them
-* include the commented variables in output.rs
-* implement apply_rewards()
-* complete output
+* review
+* more blog post
+-----------------------------------------------
 * add histeriesis on effective balances
   * https://github.com/ethereum/eth2.0-specs/blob/dev/specs/phase0/beacon-chain.md#final-updates
 * add the inactivity penalty

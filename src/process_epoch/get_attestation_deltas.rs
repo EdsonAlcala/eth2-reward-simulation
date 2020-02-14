@@ -25,6 +25,7 @@ pub fn get_attestation_deltas(
         return;
     }
 
+    // head and FFG incentives (and penalties)
     if validator.is_slashed
         || !dice.throw_dice(config.probability_online)
         || !dice.throw_dice(config.probability_honest)
