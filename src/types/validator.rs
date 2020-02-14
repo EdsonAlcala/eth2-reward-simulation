@@ -12,6 +12,7 @@ pub struct Validator {
     //   than the actual specification.
     // is_active implies that the validator was considered "active"
     //   during the previous epoch.
+    // is_slashed self-explains.
     pub is_active: bool,
     pub is_slashed: bool,
 }
