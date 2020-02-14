@@ -6,27 +6,27 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-use super::config::Config;
+use super::config;
 use super::validator::Validator;
 
 pub struct State {
     // we keep the config at hand
-    pub config: Config,
+    pub config: config::Config,
 
     pub validators: Vec<Validator>,
 }
 
 impl State {
     pub fn new() -> State {
-        let config = Config::new();
+        let config = config::Config::new();
 
-        let number_of_validators = config.total_at_stake_initial / config.max_effective_balance;
+        let number_of_validators = config.total_at_stake_initial / config::MAX_EFFECTIVE_BALANCE;
         let mut validators = vec![];
 
         for _ in 0..number_of_validators {
             validators.push(Validator {
-                balance: config.max_effective_balance,
-                effective_balance: config.max_effective_balance,
+                balance: config::MAX_EFFECTIVE_BALANCE,
+                effective_balance: config::MAX_EFFECTIVE_BALANCE,
 
                 is_active: true,
                 is_slashed: false,

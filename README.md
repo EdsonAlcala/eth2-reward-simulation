@@ -25,17 +25,23 @@ We haven't enabled them yet. Sorry.
 
 #### TODO!
 
-* add histeriesis on effective balances
-  * https://github.com/ethereum/eth2.0-specs/blob/dev/specs/phase0/beacon-chain.md#final-updates
+* test Validator::get_base_reward() and Validator::update_effective_balance()
+--------------------------------
 * edit proposer incentives assumptions
 * edit attester incenties assumptions
-* add the inactivity penalty
+* add the inactivity penalty, edit assumptions
 * add the slasher reward/punishment
   * https://github.com/ethereum/eth2.0-specs/blob/dev/specs/phase0/beacon-chain.md#slash_validator
   * https://github.com/ethereum/eth2.0-specs/blob/dev/specs/phase0/beacon-chain.md#slashings
-* have a mechanism to remove slashed validators over time
-* validator withdrawal
-* add running instructions for the simulation
+  * document assumptions
+* have the mechanism to remove slashed validators over time
+  * we are just marking the flag
+* validator withdrawal (forceful)
+* add command line option parameters for
+  * initial stake (check, min is 500,000 ETH)
+  * probability online (check, [0,1], excluding)
+  * probability honest (check, [0,1], excluding)
+--------------------------------
 * add ETHUSD as parameter and then return reward in USD
 * pick a specific (or random) validator, and follow what's going on with it over a whole simulation.
 --------------------------------

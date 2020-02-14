@@ -50,11 +50,11 @@ pub fn process_epoch(pre_state: State, epoch_number: i32, output: &mut Output) -
             &mut deltas,
         );
 
-        // SPEC: process_rewards_and_penalties
-        let new_validator = apply_deltas(&validator, &deltas);
+        // SPEC: process_rewards_and_penalties second half
+        let mut new_validator = apply_deltas(&validator, &deltas);
 
-        // SPEC: process_final_updates
-        // TODO
+        // SPEC: process_final_updates update balances with hysteriesis
+        new_validator.update_effective_balance();
 
         // update values in output
         output_row.update(&deltas);

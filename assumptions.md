@@ -104,18 +104,15 @@ If the conditions above are not met, the validator is penalized in the amount sp
 
 ##### Proposer incentives
 
-Lorem Ipsum (TODO).
-
+(PLEASE EDIT HERE)
 We pick the 32 block proposers at the start of the epoch,
 applying the effective balance bias on proposer choosing as in, the [Specs: Compute proposer index](https://github.com/ethereum/eth2.0-specs/blob/dev/specs/phase0/beacon-chain.md#compute_proposer_index)
 If we have less than 32 active validators, the simulation panics
 
 ##### Attester incentives
 
-Lorem Ipsum (TODO).
-
+(PLEASE EDIT HERE)
 ![Expected Value of the attester incentive](https://user-images.githubusercontent.com/729830/74490271-e4a59b80-4ebf-11ea-84cb-e89a50ebcd97.png)
-
 ![Probability Tree](https://user-images.githubusercontent.com/729830/74490197-b0ca7600-4ebf-11ea-9137-4b5363fed6aa.png)
 
 ##### Inactivity Penaty
@@ -124,7 +121,9 @@ Lorem Ipsum (TODO).
 
 ### Registry Updates
 
-Lorem Ipsum (TODO).
+Concerned with the adding and removing of validators. While deposits [are processed](https://github.com/ethereum/eth2.0-specs/blob/dev/specs/phase0/beacon-chain.md#deposits) on the `process_deposit` stage of `process_block`, validators become eligible to activate in this stage. By the other hand, If a validator's balance drops under `EJECTION_BALANCE`, then `initiate_validator_exit()` is triggered.
+
+**NOTE**: Implementation of these conditions is a goal of `v1.0.0` of this simulation. Not implemented yet.
 
 ### Slashings
 
@@ -132,4 +131,13 @@ Lorem Ipsum (TODO).
 
 ### Final Updates
 
-Lorem Ipsum (TODO).
+On this stage we update effective balances with hysteriesis:
+
+```python
+# Update effective balances with hysteresis
+for index, validator in enumerate(state.validators):
+    balance = state.balances[index]
+    HALF_INCREMENT = EFFECTIVE_BALANCE_INCREMENT // 2
+    if balance < validator.effective_balance or validator.effective_balance + 3 * HALF_INCREMENT < balance:
+        validator.effective_balance = min(balance - balance % EFFECTIVE_BALANCE_INCREMENT, MAX_EFFECTIVE_BALANCE)
+```

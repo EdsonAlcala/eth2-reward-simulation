@@ -49,7 +49,7 @@ pub fn get_attestation_deltas(
         //   - consider only online, and honest attesters from these N/32.
 
         // we are using this value for the attester reward as well
-        let proposer_reward_amount = base_reward / config.proposer_reward_quotient;
+        let proposer_reward_amount = base_reward / config::PROPOSER_REWARD_QUOTIENT;
 
         if proposer_indices.contains(validator_index) {
             let number_of_attesters = total_active_validators / 32;
