@@ -5,7 +5,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 use super::deltas::Deltas;
-use std::env;
 
 pub struct Output {
     pub rows: Vec<OutputRow>,
@@ -84,12 +83,6 @@ impl OutputRow {
     }
 
     pub fn update(&mut self, deltas: &Deltas) {
-        let debug_output_row = !env::var("DEBUG_OUTPUT_ROW").is_err();
-
-        if debug_output_row {
-            println!("{}", deltas);
-        }
-
         self.deltas_head_ffg_rewards += deltas.head_ffg_reward;
         self.deltas_head_ffg_penalties += deltas.head_ffg_penalty;
         self.deltas_proposer_rewards += deltas.proposer_reward;
