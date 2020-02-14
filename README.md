@@ -8,6 +8,7 @@
 * review
 * more blog post
 -----------------------------------------------
+* add the base reward to the output
 * add histeriesis on effective balances
   * https://github.com/ethereum/eth2.0-specs/blob/dev/specs/phase0/beacon-chain.md#final-updates
 * add the inactivity penalty
