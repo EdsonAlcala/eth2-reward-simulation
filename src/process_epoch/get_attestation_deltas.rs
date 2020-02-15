@@ -51,17 +51,8 @@ pub fn get_attestation_deltas(
             deltas.proposer_reward = proposer_reward_amount * number_of_attestations;
         }
 
-        // - attester
-        //
-        //   - our validator is elegible for reward (not slashed, online, and honest)
-        //   - our validator cast its attestation
-        //   - the reward is inversely proportional to the SLOT DIFFERENCE
-        //     (a.k.a INCLUSION DELAY) on which it was included
-        //   - for the sake of simplicity, assume the probability of inclusion
-        //     to be the same probability of a validator to be online
-        //   - the expected value of the probability tree can be modeled as:
-        //     E = P + P(1-P)/2 + (P(1-P)^2)/3 + ... = P*ln(P)/(P-1)
-        //     - which we can pre-compute, as such probability is given at start-up
+        // inclusion rewards - attester
+
         let maximum_attester_reward = base_reward - proposer_reward_amount;
 
         deltas.attester_reward =

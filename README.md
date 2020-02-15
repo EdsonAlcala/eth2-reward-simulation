@@ -25,7 +25,7 @@ We haven't enabled them yet. Sorry.
 
 #### TODO!
 
-* edit attester incenties assumptions
+* edit attester incentives assumptions
   * fixing the tests in the process
 * test get_attestation_deltas()
 * test apply_deltas()

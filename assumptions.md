@@ -126,7 +126,7 @@ The following conditions qualify a validator to receive a proposer incentive:
 * We pick the 32 block proposers at the start of the epoch, with a initial probability `1/N`, and then, appliying the _effective balance bias_ on proposer choosing as in, the [Specs: Compute proposer index](https://github.com/ethereum/eth2.0-specs/blob/dev/specs/phase0/beacon-chain.md#compute_proposer_index).
 * If, for any reason, there are less than 32 active validators, the simulation panics.
 
-IF the consitions are met, the validator receives in the simulation a reward equivalent to (`BASE_REWARD`/`PROPOSER_REWARD_QUOTIENT`) * (`TOTAL_ACTIVE_VALIDATORS`/`32`). The assumption been, that the size of the committee is the number of active validators in the beacon chain, evenly distributed among the slots.
+IF the conditions are met, the validator receives in the simulation a reward equivalent to (`BASE_REWARD`/`PROPOSER_REWARD_QUOTIENT`) * (`TOTAL_ACTIVE_VALIDATORS`/`32`). The assumption been, that the size of the committee is the number of active validators in the beacon chain, evenly distributed among the slots.
 
 ##### Attester incentives
 
@@ -134,9 +134,21 @@ IF the consitions are met, the validator receives in the simulation a reward equ
 See specs code at the Proposer incentives section.
 ```
 
-(PLEASE EDIT HERE)
+An unslashed validator matching the FFG source vote, gets a reward for its most recent attestation. Such reward is the difference of the validator's base reward and the [proposer incentive](#proposer-incentives), divided by the **inclusion delay** (in slots) of the vote.
+
+For example, if the proposer got an incentive of `B/8` (`B` being the `base_reward`), and the attester vote got included with a delay of **2 slots**, the attester gets an incentive of `7B/8`/`2`. If the vote would have been included at the following slot, its inclusion delay would have been just `1`, then the incentive would have reached `7B/8`.
+
+The following conditions qualify a validator to receive an attester incentive:
+
+* Our validator, in the simulation, is elegible for reward if it has received the head and FFG rewards, that is, if the validator is unslashed, online, and honest. The first quality is a property, the rest, probabilities.
+
 ![Expected Value of the attester incentive](https://user-images.githubusercontent.com/729830/74490271-e4a59b80-4ebf-11ea-84cb-e89a50ebcd97.png)
+
+In our simulation, we compute the **expected value of the attester incentive**, which is the sum of all the outcomes within its probability tree.
+
 ![Probability Tree](https://user-images.githubusercontent.com/729830/74490197-b0ca7600-4ebf-11ea-9137-4b5363fed6aa.png)
+
+To make matters simply, it is assumed that the **probability of inclusion** for an attestation has the same value as the **Online Probability**, [described above](#online-probability). Further work on this simulation may motivate the future decision to use a different value for this probability.
 
 ##### Inactivity Penaty
 
