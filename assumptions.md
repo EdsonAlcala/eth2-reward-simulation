@@ -148,7 +148,7 @@ In our simulation, we compute the **expected value of the attester incentive**, 
 
 ![Probability Tree](https://user-images.githubusercontent.com/729830/74490197-b0ca7600-4ebf-11ea-9137-4b5363fed6aa.png)
 
-To make matters simply, it is assumed that the **probability of inclusion** for an attestation has the same value as the **Online Probability**, [described above](#online-probability). Further work on this simulation may motivate the future decision to use a different value for this probability.
+To make matters simply, it is assumed that the **probability of inclusion** for an attestation has the same value as the **Online Probability**, [described above](#online-probability). As this value is given at startup, the expected value is computed likewise. Further work on this simulation may motivate the future decision to use a different value for this probability.
 
 ##### Inactivity Penaty
 
