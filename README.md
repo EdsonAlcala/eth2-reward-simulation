@@ -26,9 +26,14 @@ We haven't enabled them yet. Sorry.
 #### TODO!
 
 * test Validator::get_base_reward()
---------------------------------
+* test methods in types
 * edit proposer incentives assumptions
+  * fixing the tests in the process
 * edit attester incenties assumptions
+  * fixing the tests in the process
+* test get_attestation_deltas()
+* test apply_deltas()
+* test process_epoch()
 * add the inactivity penalty, edit assumptions
 * add the slasher reward/punishment
   * https://github.com/ethereum/eth2.0-specs/blob/dev/specs/phase0/beacon-chain.md#slash_validator

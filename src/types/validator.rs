@@ -45,6 +45,11 @@ impl Validator {
 mod tests {
     use super::*;
 
+    #[test]
+    fn test_get_base_reward() {
+        // ?
+    }
+
     struct Case {
         validator: Validator,
         expected_result: u64,

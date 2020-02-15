@@ -78,3 +78,13 @@ pub fn get_attestation_deltas(
             (maximum_attester_reward as f32 * config.exp_value_inclusion_prob).floor() as u64;
     }
 }
+
+// TODO
+// tests:
+// non active validator
+// slashed validator
+// offline validator
+// non honest validator
+// validator is a proposer
+// how do we test the offline probability?
+// how do we test the honesty probability?
