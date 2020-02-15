@@ -25,7 +25,7 @@ We haven't enabled them yet. Sorry.
 
 #### TODO!
 
-* test Validator::get_base_reward() and Validator::update_effective_balance()
+* test Validator::get_base_reward()
 --------------------------------
 * edit proposer incentives assumptions
 * edit attester incenties assumptions
