@@ -25,7 +25,6 @@ We haven't enabled them yet. Sorry.
 
 #### TODO!
 
-* test Validator::get_base_reward()
 * test methods in types
 * edit proposer incentives assumptions
   * fixing the tests in the process
