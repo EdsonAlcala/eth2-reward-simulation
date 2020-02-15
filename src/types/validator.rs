@@ -46,7 +46,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_get_base_reward() {
+    fn get_base_reward() {
         let validator = Validator {
             balance: 32_000_000_000,
             effective_balance: 32_000_000_000,
@@ -86,7 +86,7 @@ mod tests {
     }
 
     #[test]
-    fn test_update_effective_balance() {
+    fn update_effective_balance() {
         let mut cases = vec![];
 
         // balance below (or equal to) 24. effective balance 24

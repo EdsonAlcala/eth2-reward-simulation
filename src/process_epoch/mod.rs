@@ -25,7 +25,7 @@ pub fn process_epoch(pre_state: State, epoch_number: i32, output: &mut Output) -
 
     // pre-compute some values that remain constant throughout the epoch
     let total_active_balance = pre_state.get_total_active_balance();
-    let sqrt_total_active_balance = pre_state.get_total_active_balance().integer_sqrt();
+    let sqrt_total_active_balance = total_active_balance.integer_sqrt();
     let total_active_validators = pre_state.get_total_active_validators();
     let matching_balance = pre_state.get_matching_balance();
 

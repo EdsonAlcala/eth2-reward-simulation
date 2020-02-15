@@ -25,9 +25,6 @@ We haven't enabled them yet. Sorry.
 
 #### TODO!
 
-* test methods in types
-* edit proposer incentives assumptions
-  * fixing the tests in the process
 * edit attester incenties assumptions
   * fixing the tests in the process
 * test get_attestation_deltas()

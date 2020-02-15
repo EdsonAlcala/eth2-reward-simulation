@@ -104,12 +104,35 @@ If the conditions above are not met, the validator is penalized in the amount sp
 
 ##### Proposer incentives
 
-(PLEASE EDIT HERE)
-We pick the 32 block proposers at the start of the epoch,
-applying the effective balance bias on proposer choosing as in, the [Specs: Compute proposer index](https://github.com/ethereum/eth2.0-specs/blob/dev/specs/phase0/beacon-chain.md#compute_proposer_index)
-If we have less than 32 active validators, the simulation panics
+```python
+# Proposer and inclusion delay micro-rewards
+for index in get_unslashed_attesting_indices(state, matching_source_attestations):
+    attestation = min([
+        a for a in matching_source_attestations
+        if index in get_attesting_indices(state, a.data, a.aggregation_bits)
+    ], key=lambda a: a.inclusion_delay)
+    proposer_reward = Gwei(get_base_reward(state, index) // PROPOSER_REWARD_QUOTIENT)
+    rewards[attestation.proposer_index] += proposer_reward
+    max_attester_reward = get_base_reward(state, index) - proposer_reward
+    rewards[index] += Gwei(max_attester_reward // attestation.inclusion_delay)
+```
+
+The processing takes the most recent attestation of each unslashed validator matching the FFG source vote. The proposer gets `BASE_REWARD` / `PROPOSER_REWARD_QUOTIENT` **per each attestation**.
+
+The following conditions qualify a validator to receive a proposer incentive:
+
+* Our validator, in the simulation, is elegible for reward if it has received the head and FFG rewards, that is, if the validator is unslashed, online, and honest. The first quality is a property, the rest, probabilities.
+* The validator has been chosen as a proposer in this epoch
+* We pick the 32 block proposers at the start of the epoch, with a initial probability `1/N`, and then, appliying the _effective balance bias_ on proposer choosing as in, the [Specs: Compute proposer index](https://github.com/ethereum/eth2.0-specs/blob/dev/specs/phase0/beacon-chain.md#compute_proposer_index).
+* If, for any reason, there are less than 32 active validators, the simulation panics.
+
+IF the consitions are met, the validator receives in the simulation a reward equivalent to (`BASE_REWARD`/`PROPOSER_REWARD_QUOTIENT`) * (`TOTAL_ACTIVE_VALIDATORS`/`32`). The assumption been, that the size of the committee is the number of active validators in the beacon chain, evenly distributed among the slots.
 
 ##### Attester incentives
+
+```
+See specs code at the Proposer incentives section.
+```
 
 (PLEASE EDIT HERE)
 ![Expected Value of the attester incentive](https://user-images.githubusercontent.com/729830/74490271-e4a59b80-4ebf-11ea-84cb-e89a50ebcd97.png)
