@@ -66,21 +66,21 @@ impl Output {
 
         for (index, item) in items_to_get.iter().enumerate() {
             let current_item = &self.rows[*item as usize];
-            let _network_percentage_rewards = ((current_item.total_staked_balance as f64
+            let network_percentage_rewards = ((current_item.total_staked_balance as f64
                 - config.total_at_stake_initial as f64)
                 / config.total_at_stake_initial as f64)
                 * 100f64;
-            let _network_percentage_penalties = ((current_item.deltas_head_ffg_penalties as f64)
+            let network_percentage_penalties = ((current_item.deltas_head_ffg_penalties as f64)
                 / config.total_at_stake_initial as f64)
                 * 100f64;
-            let _network_percentage_net_rewards =
-                _network_percentage_rewards - _network_percentage_penalties;
+            let network_percentage_net_rewards =
+                network_percentage_rewards - network_percentage_penalties;
 
             monthly_report.push(MonthlyReportRow {
                 month_number: index as u32 + 1u32,
-                network_percentage_rewards: _network_percentage_rewards,
-                network_percentage_penalties: _network_percentage_penalties,
-                network_percentage_net_rewards: _network_percentage_net_rewards,
+                network_percentage_rewards: network_percentage_rewards,
+                network_percentage_penalties: network_percentage_penalties,
+                network_percentage_net_rewards: network_percentage_net_rewards,
             });
         }
 
