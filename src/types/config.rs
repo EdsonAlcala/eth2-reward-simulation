@@ -28,10 +28,13 @@ pub struct Config {
 impl Config {
     pub fn new() -> Config {
         // we want to get these values from the command line
-        let total_at_stake_initial = 1_000_000 * 1_000_000_000;
-        let epochs = 82_125; // = (60 * 60 * 24 * 365)/(12 * 32)
-        let probability_online: f32 = 0.99;
-        let probability_honest: f32 = 1.0;
+        let total_at_stake_initial = 500_000 * 1_000_000_000; // Default 500,000 ETH
+        let epochs = 10; // 81_125 = (60 * 60 * 24 * 365)/(12 * 32) // Default 10
+        let probability_online: f32 = 0.99; // Default 0.99
+        let probability_honest: f32 = 1.0; // Default 1.00
+
+        // TODO
+        // variable for type of output, default, "by epoch"
 
         // pre-computation
         let exp_value_inclusion_prob = Config::get_exp_value_inclusion_prob(probability_online);

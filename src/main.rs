@@ -19,16 +19,10 @@ fn main() {
     }
 
     // TODO: Use a command line option here
-    if true {
-        let only_per_month = output.get_rows_by_month(&state.config);
-
-        for record in only_per_month {
-            println!(
-                "Month number: {}, Total Network Rewards {}",
-                record.month_number, record.network_percentage_net_rewards
-            );
-        }
+    let monthly_report_bool = false;
+    if monthly_report_bool {
+        output.print_monthly_report(&state.config);
     } else {
-        output.print("csv");
+        output.print_epoch_report("csv");
     }
 }

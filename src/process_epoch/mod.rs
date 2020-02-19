@@ -14,10 +14,10 @@ use crate::types::*;
 use apply_deltas::*;
 use get_attestation_deltas::*;
 
-pub fn process_epoch(pre_state: State, epoch_number: i32, output: &mut Output) -> State {
+pub fn process_epoch(pre_state: State, epoch_id: i32, output: &mut Output) -> State {
     // start to record
-    let mut output_row = OutputRow::new();
-    output_row.epoch_number = epoch_number;
+    let mut epoch_report_row = EpochReportRow::new();
+    epoch_report_row.epoch_id = epoch_id;
 
     let epoch_processing_start = Instant::now();
 
@@ -56,7 +56,7 @@ pub fn process_epoch(pre_state: State, epoch_number: i32, output: &mut Output) -
         // SPEC: process_final_updates update balances with hysteriesis
         new_validator.update_effective_balance();
 
-        output_row.update(&deltas);
+        epoch_report_row.aggregate(&deltas);
 
         post_state_validators.push(new_validator);
     }
@@ -67,12 +67,12 @@ pub fn process_epoch(pre_state: State, epoch_number: i32, output: &mut Output) -
         validators: post_state_validators,
     };
 
-    output_row.total_staked_balance = post_state.get_total_staked_balance();
-    output_row.total_effective_balance = post_state.get_total_active_balance();
+    epoch_report_row.total_staked_balance = post_state.get_total_staked_balance();
+    epoch_report_row.total_effective_balance = post_state.get_total_active_balance();
 
     // stop the timer, send the values to output
-    output_row.time_elapsed = epoch_processing_start.elapsed().as_micros();
-    output.push(output_row);
+    epoch_report_row.time_elapsed = epoch_processing_start.elapsed().as_micros();
+    output.push(epoch_report_row);
 
     post_state
 }

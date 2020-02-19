@@ -6,10 +6,10 @@
 use super::config::*;
 use super::deltas::Deltas;
 
-const NUMBER_OF_MONTHS: i32 = 12;
+const MONTHS_PER_YEAR: i32 = 12;
 
 pub struct Output {
-    pub rows: Vec<OutputRow>,
+    pub rows: Vec<EpochReportRow>,
 }
 
 impl Output {
@@ -19,9 +19,43 @@ impl Output {
         Output { rows: rows }
     }
 
-    pub fn get_rows_by_month(&self, config: &Config) -> Vec<MonthlyReportRow> {
+    pub fn push(&mut self, row: EpochReportRow) {
+        self.rows.push(row);
+    }
+
+    pub fn print_epoch_report(&self, mode: &str) {
+        if mode == "csv" {
+            println!(
+                "{},{},{},{},{},{},{},{}",
+                "epoch number".to_string(),
+                "FFG rewards".to_string(),
+                "FFG penalties".to_string(),
+                "proposer rewards".to_string(),
+                "attester rewards".to_string(),
+                "total staked balance".to_string(),
+                "total effective balance".to_string(),
+                "sim time (μs)".to_string(),
+            );
+
+            for row in &self.rows {
+                println!(
+                    "{},{},{},{},{},{},{},{}",
+                    row.epoch_id,
+                    row.deltas_head_ffg_rewards,
+                    row.deltas_head_ffg_penalties,
+                    row.deltas_proposer_rewards,
+                    row.deltas_attester_rewards,
+                    row.total_staked_balance,
+                    row.total_effective_balance,
+                    row.time_elapsed,
+                );
+            }
+        }
+    }
+
+    pub fn print_monthly_report(&self, config: &Config) {
         let epochs_per_year = config.epochs;
-        let epochs_per_month = epochs_per_year / NUMBER_OF_MONTHS;
+        let epochs_per_month = epochs_per_year / MONTHS_PER_YEAR;
 
         let mut monthly_report: Vec<MonthlyReportRow> = Vec::new();
         let mut items_to_get = vec![];
@@ -49,40 +83,12 @@ impl Output {
                 network_percentage_net_rewards: _network_percentage_net_rewards,
             });
         }
-        monthly_report
-    }
 
-    pub fn push(&mut self, row: OutputRow) {
-        self.rows.push(row);
-    }
-
-    pub fn print(&self, mode: &str) {
-        if mode == "csv" {
+        for record in monthly_report {
             println!(
-                "{},{},{},{},{},{},{},{}",
-                "epoch number".to_string(),
-                "FFG rewards".to_string(),
-                "FFG penalties".to_string(),
-                "proposer rewards".to_string(),
-                "attester rewards".to_string(),
-                "total staked balance".to_string(),
-                "total effective balance".to_string(),
-                "sim time (μs)".to_string(),
+                "Month number: {}, Total Network Rewards {}",
+                record.month_number, record.network_percentage_net_rewards
             );
-
-            for row in &self.rows {
-                println!(
-                    "{},{},{},{},{},{},{},{}",
-                    row.epoch_number,
-                    row.deltas_head_ffg_rewards,
-                    row.deltas_head_ffg_penalties,
-                    row.deltas_proposer_rewards,
-                    row.deltas_attester_rewards,
-                    row.total_staked_balance,
-                    row.total_effective_balance,
-                    row.time_elapsed,
-                );
-            }
         }
     }
 }
@@ -96,8 +102,8 @@ pub struct MonthlyReportRow {
 }
 
 #[derive(Copy, Clone, Debug)]
-pub struct OutputRow {
-    pub epoch_number: i32,
+pub struct EpochReportRow {
+    pub epoch_id: i32,
 
     pub deltas_head_ffg_rewards: u64,
     pub deltas_head_ffg_penalties: u64,
@@ -110,10 +116,10 @@ pub struct OutputRow {
     pub time_elapsed: u128,
 }
 
-impl OutputRow {
-    pub fn new() -> OutputRow {
-        OutputRow {
-            epoch_number: 0,
+impl EpochReportRow {
+    pub fn new() -> EpochReportRow {
+        EpochReportRow {
+            epoch_id: 0,
 
             deltas_head_ffg_rewards: 0,
             deltas_head_ffg_penalties: 0,
@@ -127,7 +133,7 @@ impl OutputRow {
         }
     }
 
-    pub fn update(&mut self, deltas: &Deltas) {
+    pub fn aggregate(&mut self, deltas: &Deltas) {
         self.deltas_head_ffg_rewards += deltas.head_ffg_reward;
         self.deltas_head_ffg_penalties += deltas.head_ffg_penalty;
         self.deltas_proposer_rewards += deltas.proposer_reward;
