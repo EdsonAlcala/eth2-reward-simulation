@@ -51,6 +51,7 @@ OPTIONS:
   - [x] Online probability
   - [ ] Honesty probability
   - [x] Epochs to run
+- [x] Monthly Report
 
 ### Documentation
 
@@ -60,9 +61,8 @@ OPTIONS:
 ### UX
 - [ ] Command option parameters
   - [ ] Honesty probability
-- [ ] Add ETHUSD as parameter and then return reward in USD
+  - [ ] Add ETHUSD as parameter and then return reward in USD
 - [ ] One special validator with different initial parameters
-- [ ] Monthly Report
 
 ### Balance
 - [ ] Inactivity penalty
