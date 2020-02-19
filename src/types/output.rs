@@ -66,11 +66,11 @@ impl Output {
 
         for (index, item) in items_to_get.iter().enumerate() {
             let current_item = &self.rows[*item as usize];
-            let network_percentage_rewards = self.get_variation_percentage(
+            let network_percentage_rewards = Output::get_variation_percentage(
                 current_item.total_staked_balance,
                 config.total_at_stake_initial,
             );
-            let network_percentage_penalties = self.get_variation_percentage(
+            let network_percentage_penalties = Output::get_variation_percentage(
                 current_item.deltas_head_ffg_penalties,
                 config.total_at_stake_initial,
             );
@@ -93,7 +93,7 @@ impl Output {
         }
     }
 
-    fn get_variation_percentage(&self, new_value: u64, old_value: u64) -> f64 {
+    fn get_variation_percentage(new_value: u64, old_value: u64) -> f64 {
         ((new_value as f64 - old_value as f64) / old_value as f64) * 100.0
     }
 }

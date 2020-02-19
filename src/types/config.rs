@@ -118,10 +118,48 @@ impl Config {
     }
 
     fn get_exp_value_inclusion_prob(p: f32) -> f32 {
-        p * p.ln() / (p - 1.00)
+        if p == 0.0 {
+            p
+        } else if p == 1.0 {
+            p
+        } else {
+            p * p.ln() / (p - 1.00)
+        }
     }
 }
 
 // TODO: Tests
-//   - edge cases for get_exp_value_inclusion_prob() (0, 1, values outside the interval)
 //   - Config::new()
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn get_exp_value_inclusion_prob() {
+        assert_eq!(
+            0.00,
+            truncate_two(Config::get_exp_value_inclusion_prob(0.0))
+        );
+        assert_eq!(
+            1.00,
+            truncate_two(Config::get_exp_value_inclusion_prob(1.0))
+        );
+        assert_eq!(
+            0.99,
+            truncate_two(Config::get_exp_value_inclusion_prob(0.99))
+        );
+        assert_eq!(
+            0.97,
+            truncate_two(Config::get_exp_value_inclusion_prob(0.95))
+        );
+        assert_eq!(
+            0.94,
+            truncate_two(Config::get_exp_value_inclusion_prob(0.9))
+        );
+    }
+
+    fn truncate_two(number: f32) -> f32 {
+        (number * 100.0).floor() / 100.0
+    }
+}
