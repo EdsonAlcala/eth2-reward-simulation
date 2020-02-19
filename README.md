@@ -33,6 +33,10 @@ We haven't enabled them yet. Sorry.
 - [x] FFG rewards and penalties
 - [x] Proposer and attester incentives
 
+##### Documentation
+
+- [x] [Assumptions](/assumptions.md)
+
 #### TODO!
 ##### UX
 - [ ] Command option parameters
