@@ -33,10 +33,16 @@ FLAGS:
     -V, --version    Prints version information
 
 OPTIONS:
-    -e, --epochs <t>                Epochs to run
-    -i, --initial_stake <ETH>       Your initial stake in ETH
-    -p, --probability_online <p>    A value in [0,1]
+    -e, --epochs <t>                  Epochs to run
+    -i, --initial_stake <ETH>         Your initial stake in ETH
+    -r, --printing_output <option>    Type of report (epoch, monthly)
+    -p, --probability_online <p>      A value in [0,1]
+```
 
+Example
+
+```
+simulation -i 1000000 -p 0.95 -e 1000 -r epoch
 ```
 
 ## Features
