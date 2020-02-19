@@ -45,6 +45,13 @@ OPTIONS:
 - [x] FFG rewards and penalties
 - [x] Proposer and attester incentives
 
+### UX
+- [ ] Command option parameters
+  - [x] Initial stake
+  - [x] Online probability
+  - [ ] Honesty probability
+  - [x] Epochs to run
+
 ### Documentation
 
 - [x] [Assumptions](/assumptions.md)
@@ -52,10 +59,7 @@ OPTIONS:
 ## TODO!
 ### UX
 - [ ] Command option parameters
-  - [ ] Initial stake
-  - [ ] Online probability
   - [ ] Honesty probability
-  - [ ] Epochs to run
 - [ ] Add ETHUSD as parameter and then return reward in USD
 - [ ] One special validator with different initial parameters
 - [ ] Monthly Report
