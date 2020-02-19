@@ -10,12 +10,6 @@ use std::cmp;
 pub struct Validator {
     pub balance: u64,
     pub effective_balance: u64,
-
-    // these flags may represent something slightly different
-    //   than the actual specification.
-    // is_active implies that the validator was considered "active"
-    //   during the previous epoch.
-    // is_slashed self-explains.
     pub is_active: bool,
     pub is_slashed: bool,
 }

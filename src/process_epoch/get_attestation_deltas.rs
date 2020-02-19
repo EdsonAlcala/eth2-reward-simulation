@@ -59,6 +59,12 @@ pub fn get_attestation_deltas(
     }
 }
 
+// TODO: Tests
+// - attester reward
+// - non elegible validator
+// - slashed validator
+// - FFG rewards
+
 #[cfg(test)]
 mod tests {
     use super::*;

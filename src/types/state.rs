@@ -78,3 +78,10 @@ impl State {
             .sum()
     }
 }
+
+// TODO: Test
+// - State::new()
+// - State::get_total_active_balance()
+// - State::get_total_active_balance()
+// - State::get_total_active_validators()
+// - State::get_matching_balance()

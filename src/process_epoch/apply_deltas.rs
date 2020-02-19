@@ -16,3 +16,6 @@ pub fn apply_deltas(old_validator: &Validator, deltas: &Deltas) -> Validator {
         is_slashed: old_validator.is_slashed,
     }
 }
+
+// TODO: Test
+// - apply_deltas()

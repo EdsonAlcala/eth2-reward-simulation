@@ -76,3 +76,6 @@ pub fn process_epoch(pre_state: State, epoch_id: i32, output: &mut Output) -> St
 
     post_state
 }
+
+// TODO: Test
+// - process_epoch()

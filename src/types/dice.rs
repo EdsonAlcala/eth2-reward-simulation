@@ -63,3 +63,6 @@ impl Dice {
         proposer_indices
     }
 }
+
+// TODO: Test
+// - Dice::pick_epoch_proposers()
