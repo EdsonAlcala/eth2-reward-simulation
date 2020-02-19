@@ -5,7 +5,7 @@
 
 #### Run this simulation
 
-1. [Get rust](https://www.rust-lang.org/learn/get-started)
+1. [Get Rust](https://www.rust-lang.org/learn/get-started)
 2. You can just run the simulation in _debug_ mode (slow), or compile and run it (good)
 
 ```bash
@@ -23,34 +23,52 @@ Note: `cargo` is the Rust package manager.
 
 We haven't enabled them yet. Sorry.
 
-#### TODO!
+#### Features
 
-* edit attester incentives assumptions
-  * fixing the tests in the process
-* test get_attestation_deltas()
-* test apply_deltas()
-* test process_epoch()
-* add the inactivity penalty, edit assumptions
-* add the slasher reward/punishment
-  * https://github.com/ethereum/eth2.0-specs/blob/dev/specs/phase0/beacon-chain.md#slash_validator
-  * https://github.com/ethereum/eth2.0-specs/blob/dev/specs/phase0/beacon-chain.md#slashings
-  * document assumptions
-* have the mechanism to remove slashed validators over time
-  * we are just marking the flag
-* validator withdrawal (forceful)
-* add command line option parameters for
-  * initial stake (check, min is 500,000 ETH)
-  * probability online (check, [0,1], excluding)
-  * probability honest (check, [0,1], excluding)
---------------------------------
-* add ETHUSD as parameter and then return reward in USD
-* pick a specific (or random) validator, and follow what's going on with it over a whole simulation.
---------------------------------
-* make this README a decent one
---------------------------------
-* do the blogpost
-  * https://docs.google.com/document/d/10_z2YudaBBWfqgIFAip44TA6PJ049R0NPAyAsGBsMH8/edit
-* tests, coverage. and blah blah.
+##### UX
+
+#### Features
+##### Balance
+
+- [x] FFG rewards and penalties
+- [x] Proposer and attester incentives
+
+#### TODO!
+##### UX
+- [ ] Command option parameters
+  - [ ] Initial stake
+  - [ ] Online probability
+  - [ ] Honesty probability
+  - [ ] Epochs to run
+- [ ] Add ETHUSD as parameter and then return reward in USD
+- [ ] One special validator with different initial parameters
+
+##### Balance
+- [ ] Inactivity penalty
+- [ ] Slashing
+  - [ ] Whistleblower reward
+  - [ ] Proposer reward
+  - [ ] Slashed validator penalty
+  - [ ] _Midway penalty_
+
+##### Validator
+- [ ] Validator exit
+  - [ ] Balance ejection
+  - [ ] Slasher ejection
+  - [ ] Voluntary exit
+- [ ] Validator activation
+- [ ] Account _top up_
+
+##### Tests
+- [ ] Attester incentives
+- [ ] process_epoch()
+  - [ ] probability 1.0
+  - [ ] probability 0.9
+  - [ ] probability 0.5
+
+##### Docs
+- [ ] Inactivity penalty: assumptions.md
+- [ ] Slashing: assumptions.md
 
 #### License
 

@@ -52,7 +52,6 @@ pub fn get_attestation_deltas(
         }
 
         // inclusion rewards - attester
-
         let maximum_attester_reward = base_reward - proposer_reward_amount;
 
         deltas.attester_reward =
@@ -148,13 +147,25 @@ mod tests {
         // the actual test
         assert_eq!(0, deltas.proposer_reward);
     }
-}
 
-// TODO
-// tests:
-// - non active validator
-// - slashed validator
-// - offline validator
-// - non honest validator
-// - how do we test the offline probability?
-// - how do we test the honesty probability?
+    #[test]
+    fn attester_reward() {
+        let mut state = State::new();
+        let total_active_balance = state.get_total_active_balance();
+        let sqrt_total_active_balance = total_active_balance.integer_sqrt();
+        let total_active_validators = state.get_total_active_validators();
+        let matching_balance = state.get_matching_balance();
+        let base_reward = state.validators[0].get_base_reward(sqrt_total_active_balance);
+        let mut deltas = Deltas::new();
+
+        // pick the 32 block proposers
+        let mut dice = Dice::new();
+        let mut proposer_indices = dice.pick_epoch_proposers(&state);
+
+        // arrange for our validator to be always online and honest
+        state.config.probability_online = 1.0;
+        state.config.probability_honest = 1.0;
+
+        // ...
+    }
+}
