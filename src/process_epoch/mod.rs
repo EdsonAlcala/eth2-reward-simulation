@@ -56,7 +56,6 @@ pub fn process_epoch(pre_state: State, epoch_number: i32, output: &mut Output) -
         // SPEC: process_final_updates update balances with hysteriesis
         new_validator.update_effective_balance();
 
-        // update values in output
         output_row.update(&deltas);
 
         post_state_validators.push(new_validator);
@@ -67,9 +66,10 @@ pub fn process_epoch(pre_state: State, epoch_number: i32, output: &mut Output) -
         config: pre_state.config,
         validators: post_state_validators,
     };
+
     output_row.total_staked_balance = post_state.get_total_staked_balance();
     output_row.total_effective_balance = post_state.get_total_active_balance();
-
+    
     // stop the timer, send the values to output
     output_row.time_elapsed = epoch_processing_start.elapsed().as_micros();
     output.push(output_row);

@@ -18,5 +18,15 @@ fn main() {
         state = process_epoch(state, i, &mut output);
     }
 
-    output.print("csv");
+    let only_per_month = output.get_rows_by_month(&state.config);
+    
+    for record in only_per_month {
+        println!(
+            "Month number: {}, Total Network Rewards {}",
+            record.month_number,
+            record.network_percentage_net_rewards
+        );
+    }
+
+    // output.print("csv");
 }
