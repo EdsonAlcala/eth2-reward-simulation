@@ -4,12 +4,17 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+extern crate clap;
+
+use clap::{App, Arg};
+
 pub const MAX_EFFECTIVE_BALANCE: u64 = 32_000_000_000;
 pub const BASE_REWARD_FACTOR: u64 = 64;
 pub const BASE_REWARDS_PER_EPOCH: u64 = 4;
 pub const PROPOSER_REWARD_QUOTIENT: u64 = 8;
 pub const EFFECTIVE_BALANCE_INCREMENT: u64 = 1_000_000_000;
 
+#[derive(Debug)]
 pub struct Config {
     // how many epochs we want to run?
     pub epochs: i32,
@@ -27,22 +32,77 @@ pub struct Config {
 
 impl Config {
     pub fn new() -> Config {
-        // we want to get these values from the command line
-        let total_at_stake_initial = 500_000 * 1_000_000_000; // Default 500,000 ETH
-        let epochs = 10; // 81_125 = (60 * 60 * 24 * 365)/(12 * 32) // Default 10
-        let probability_online: f32 = 0.99; // Default 0.99
-        let probability_honest: f32 = 1.0; // Default 1.00
+        // parse command line options
+        let matches = App::new("Eth2 Reward Simulator")
+            .arg(
+                Arg::with_name("initial_stake")
+                    .short("i")
+                    .long("initial_stake")
+                    .value_name("ETH")
+                    .help("Your initial stake in ETH"),
+            )
+            .arg(
+                Arg::with_name("epochs")
+                    .short("e")
+                    .long("epochs")
+                    .value_name("t")
+                    .help("Epochs to run"),
+            )
+            .arg(
+                Arg::with_name("probability_online")
+                    .short("p")
+                    .long("probability_online")
+                    .value_name("p")
+                    .help("A value in [0,1]"),
+            )
+            .get_matches();
+
+        let initial_stake = matches.value_of("initial_stake").unwrap_or("500000");
+        let initial_stake: u64 = match initial_stake.trim().parse() {
+            Ok(num) => num,
+            Err(_) => 500_000,
+        };
+        if initial_stake < 500_000 {
+            panic!("initial_stake should be equal or greater than 500000")
+        }
+
+        // ideal default: 81_125 = (60 * 60 * 24 * 365)/(12 * 32)
+        // current default 10
+        let epochs = matches.value_of("epochs").unwrap_or("10");
+        let epochs: i32 = match epochs.trim().parse() {
+            Ok(num) => num,
+            Err(_) => 10,
+        };
+        if epochs < 1 {
+            panic!("epoch should be a positive integer")
+        }
+
+        let probability_online = matches.value_of("probability_online").unwrap_or("0.99");
+        let probability_online: f32 = match probability_online.trim().parse() {
+            Ok(num) => num,
+            Err(_) => 0.99,
+        };
+        if probability_online < 0.0 || probability_online > 1.0 {
+            panic!("probability online should be in the interval [0,1]");
+        }
+
+        // stick to 1.0 for now
+        let probability_honest: f32 = 1.0;
 
         // pre-computation
         let exp_value_inclusion_prob = Config::get_exp_value_inclusion_prob(probability_online);
 
-        Config {
+        let ccc = Config {
             epochs: epochs,
-            total_at_stake_initial: total_at_stake_initial,
+            total_at_stake_initial: initial_stake * 1_000_000_000,
             probability_online: probability_online,
             probability_honest: probability_honest,
             exp_value_inclusion_prob: exp_value_inclusion_prob,
-        }
+        };
+
+        println!("{:?}", ccc);
+
+        ccc
     }
 
     fn get_exp_value_inclusion_prob(p: f32) -> f32 {

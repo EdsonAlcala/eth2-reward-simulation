@@ -34,7 +34,7 @@ impl Output {
                 "attester rewards".to_string(),
                 "total staked balance".to_string(),
                 "total effective balance".to_string(),
-                "sim time (μs)".to_string(),
+                "time μs".to_string(),
             );
 
             for row in &self.rows {

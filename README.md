@@ -1,4 +1,3 @@
-
 # Rewards and Penalties Simulator for Ethereum 2.0
 
 ## Assumptions
@@ -23,7 +22,22 @@ Note: `cargo` is the Rust package manager.
 
 ## Command line flags
 
-We haven't enabled them yet. Sorry.
+```
+Eth2 Reward Simulator 
+
+USAGE:
+    simulation [OPTIONS]
+
+FLAGS:
+    -h, --help       Prints help information
+    -V, --version    Prints version information
+
+OPTIONS:
+    -e, --epochs <t>                Epochs to run
+    -i, --initial_stake <ETH>       Your initial stake in ETH
+    -p, --probability_online <p>    A value in [0,1]
+
+```
 
 ## Features
 ### Balance
