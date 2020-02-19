@@ -122,8 +122,6 @@ impl Config {
     }
 }
 
-// TODO
-// - A control variable for printing output
-// - Tests
+// TODO: Tests
 //   - edge cases for get_exp_value_inclusion_prob() (0, 1, values outside the interval)
 //   - Config::new()
