@@ -28,7 +28,7 @@ pub struct Config {
 impl Config {
     pub fn new() -> Config {
         // we want to get these values from the command line
-        let total_at_stake_initial = 1_000_000_000_000_000;
+        let total_at_stake_initial = 1_000_000 * 1_000_000_000;
         let epochs = 82_125; // = (60 * 60 * 24 * 365)/(12 * 32)
         let probability_online: f32 = 0.99;
         let probability_honest: f32 = 1.0;

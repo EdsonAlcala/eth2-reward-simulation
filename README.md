@@ -24,10 +24,6 @@ Note: `cargo` is the Rust package manager.
 We haven't enabled them yet. Sorry.
 
 ### Features
-
-#### UX
-
-### Features
 #### Balance
 
 - [x] FFG rewards and penalties
@@ -46,6 +42,7 @@ We haven't enabled them yet. Sorry.
   - [ ] Epochs to run
 - [ ] Add ETHUSD as parameter and then return reward in USD
 - [ ] One special validator with different initial parameters
+- [ ] Monthly Report
 
 #### Balance
 - [ ] Inactivity penalty

@@ -69,7 +69,7 @@ pub fn process_epoch(pre_state: State, epoch_number: i32, output: &mut Output) -
 
     output_row.total_staked_balance = post_state.get_total_staked_balance();
     output_row.total_effective_balance = post_state.get_total_active_balance();
-    
+
     // stop the timer, send the values to output
     output_row.time_elapsed = epoch_processing_start.elapsed().as_micros();
     output.push(output_row);
