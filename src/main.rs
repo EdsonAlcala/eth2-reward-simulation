@@ -18,12 +18,9 @@ fn main() {
         state = process_epoch(state, i, &mut output);
     }
 
-    let monthly_report_bool = false;
-    if monthly_report_bool {
+    if state.config.printing_output == "monthly" {
         output.print_monthly_report(&state.config);
-    } else {
+    } else if state.config.printing_output == "epoch" {
         output.print_epoch_report("csv");
     }
 }
-
-// TODO; Use a command line option on printing

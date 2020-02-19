@@ -66,13 +66,14 @@ impl Output {
 
         for (index, item) in items_to_get.iter().enumerate() {
             let current_item = &self.rows[*item as usize];
-            let network_percentage_rewards = ((current_item.total_staked_balance as f64
-                - config.total_at_stake_initial as f64)
-                / config.total_at_stake_initial as f64)
-                * 100f64;
-            let network_percentage_penalties = ((current_item.deltas_head_ffg_penalties as f64)
-                / config.total_at_stake_initial as f64)
-                * 100f64;
+            let network_percentage_rewards = self.get_variation_percentage(
+                current_item.total_staked_balance,
+                config.total_at_stake_initial,
+            );
+            let network_percentage_penalties = self.get_variation_percentage(
+                current_item.deltas_head_ffg_penalties,
+                config.total_at_stake_initial,
+            );
             let network_percentage_net_rewards =
                 network_percentage_rewards - network_percentage_penalties;
 
@@ -90,6 +91,10 @@ impl Output {
                 record.month_number, record.network_percentage_net_rewards
             );
         }
+    }
+
+    fn get_variation_percentage(&self, new_value: u64, old_value: u64) -> f64 {
+        ((new_value as f64 - old_value as f64) / old_value as f64) * 100.0
     }
 }
 

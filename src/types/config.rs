@@ -16,6 +16,9 @@ pub const EFFECTIVE_BALANCE_INCREMENT: u64 = 1_000_000_000;
 
 #[derive(Debug)]
 pub struct Config {
+    // what kind of reports are we producing here?
+    pub printing_output: String,
+
     // how many epochs we want to run?
     pub epochs: i32,
 
@@ -55,6 +58,13 @@ impl Config {
                     .value_name("p")
                     .help("A value in [0,1]"),
             )
+            .arg(
+                Arg::with_name("printing_output")
+                    .short("r")
+                    .long("printing_output")
+                    .value_name("option")
+                    .help("Type of report (epoch, monthly)"),
+            )
             .get_matches();
 
         let initial_stake = matches.value_of("initial_stake").unwrap_or("500000");
@@ -83,7 +93,12 @@ impl Config {
             Err(_) => 0.99,
         };
         if probability_online < 0.0 || probability_online > 1.0 {
-            panic!("probability online should be in the interval [0,1]");
+            panic!("probability_online should be in the interval [0,1]");
+        }
+
+        let printing_output = matches.value_of("printing_output").unwrap_or("epoch");
+        if printing_output != "epoch" && printing_output != "monthly" {
+            panic!("printing_output only supports 'epoch' or 'monthly'");
         }
 
         // stick to 1.0 for now
@@ -92,17 +107,14 @@ impl Config {
         // pre-computation
         let exp_value_inclusion_prob = Config::get_exp_value_inclusion_prob(probability_online);
 
-        let ccc = Config {
+        Config {
+            printing_output: printing_output.to_string(),
             epochs: epochs,
             total_at_stake_initial: initial_stake * 1_000_000_000,
             probability_online: probability_online,
             probability_honest: probability_honest,
             exp_value_inclusion_prob: exp_value_inclusion_prob,
-        };
-
-        println!("{:?}", ccc);
-
-        ccc
+        }
     }
 
     fn get_exp_value_inclusion_prob(p: f32) -> f32 {
@@ -111,8 +123,6 @@ impl Config {
 }
 
 // TODO
-// - CLI options to fill config variables
-// - Fill up with defaults otherwise
 // - A control variable for printing output
 // - Tests
 //   - edge cases for get_exp_value_inclusion_prob() (0, 1, values outside the interval)
