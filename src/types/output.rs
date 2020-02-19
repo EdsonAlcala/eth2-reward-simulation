@@ -3,8 +3,10 @@
 // Output stores the outcomes from the simulation of an epoch
 //
 ////////////////////////////////////////////////////////////////////////////////
-
+use super::config::*;
 use super::deltas::Deltas;
+
+const NUMBER_OF_MONTHS: i32 = 12;
 
 pub struct Output {
     pub rows: Vec<OutputRow>,
@@ -17,6 +19,39 @@ impl Output {
         Output { rows: rows }
     }
 
+    pub fn get_rows_by_month(&self, config: &Config) -> Vec<MonthlyReportRow> {
+        let epochs_per_year = config.epochs;
+        let epochs_per_month = epochs_per_year / NUMBER_OF_MONTHS;
+
+        let mut monthly_report: Vec<MonthlyReportRow> = Vec::new();
+        let mut items_to_get = vec![];
+
+        for epoch in (epochs_per_month..epochs_per_year).step_by(epochs_per_month as usize) {
+            items_to_get.push(epoch)
+        }
+
+        for (index, item) in items_to_get.iter().enumerate() {
+            let current_item = &self.rows[*item as usize];
+            let _network_percentage_rewards = ((current_item.total_staked_balance as f64
+                - config.total_at_stake_initial as f64)
+                / config.total_at_stake_initial as f64)
+                * 100f64;
+            let _network_percentage_penalties = ((current_item.deltas_head_ffg_penalties as f64)
+                / config.total_at_stake_initial as f64)
+                * 100f64;
+            let _network_percentage_net_rewards =
+                _network_percentage_rewards - _network_percentage_penalties;
+
+            monthly_report.push(MonthlyReportRow {
+                month_number: index as u32 + 1u32,
+                network_percentage_rewards: _network_percentage_rewards,
+                network_percentage_penalties: _network_percentage_penalties,
+                network_percentage_net_rewards: _network_percentage_net_rewards,
+            });
+        }
+        monthly_report
+    }
+
     pub fn push(&mut self, row: OutputRow) {
         self.rows.push(row);
     }
@@ -26,13 +61,13 @@ impl Output {
             println!(
                 "{},{},{},{},{},{},{},{}",
                 "epoch number".to_string(),
-                "head/ffg rewards".to_string(),
-                "head/ffg penalties".to_string(),
+                "FFG rewards".to_string(),
+                "FFG penalties".to_string(),
                 "proposer rewards".to_string(),
                 "attester rewards".to_string(),
                 "total staked balance".to_string(),
                 "total effective balance".to_string(),
-                "simul time (ms)".to_string(),
+                "sim time (μs)".to_string(),
             );
 
             for row in &self.rows {
@@ -53,8 +88,17 @@ impl Output {
 }
 
 #[derive(Copy, Clone)]
+pub struct MonthlyReportRow {
+    pub month_number: u32,
+    pub network_percentage_rewards: f64,
+    pub network_percentage_penalties: f64,
+    pub network_percentage_net_rewards: f64,
+}
+
+#[derive(Copy, Clone, Debug)]
 pub struct OutputRow {
     pub epoch_number: i32,
+
     pub deltas_head_ffg_rewards: u64,
     pub deltas_head_ffg_penalties: u64,
     pub deltas_proposer_rewards: u64,
@@ -70,6 +114,7 @@ impl OutputRow {
     pub fn new() -> OutputRow {
         OutputRow {
             epoch_number: 0,
+
             deltas_head_ffg_rewards: 0,
             deltas_head_ffg_penalties: 0,
             deltas_proposer_rewards: 0,
