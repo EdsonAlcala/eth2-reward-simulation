@@ -140,3 +140,11 @@ impl EpochReportRow {
         self.deltas_attester_rewards += deltas.attester_reward;
     }
 }
+
+// TODO: Tests
+// - Output::new()
+// - Output::push()
+// - Output::print_epoch_report()
+// - Output::print_monthly_report()
+// - EpochReportRow::new()
+// - EpochReportRow::aggregate()
