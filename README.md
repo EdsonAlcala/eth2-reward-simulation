@@ -1,9 +1,11 @@
 
-## Rewards and Penalties Simulator for Ethereum 2.0
+# Rewards and Penalties Simulator for Ethereum 2.0
+
+## Assumptions
 
 * [Simulation Assumptions](assumptions.md)
 
-### Run this simulation
+## Run this simulation
 
 1. [Get Rust](https://www.rust-lang.org/learn/get-started)
 2. You can just run the simulation in _debug_ mode (slow), or compile and run it (good)
@@ -19,22 +21,22 @@ cargo build --release && ./target/release/simulation
 
 Note: `cargo` is the Rust package manager.
 
-### Command line flags
+## Command line flags
 
 We haven't enabled them yet. Sorry.
 
-### Features
-#### Balance
+## Features
+### Balance
 
 - [x] FFG rewards and penalties
 - [x] Proposer and attester incentives
 
-#### Documentation
+### Documentation
 
 - [x] [Assumptions](/assumptions.md)
 
-### TODO!
-#### UX
+## TODO!
+### UX
 - [ ] Command option parameters
   - [ ] Initial stake
   - [ ] Online probability
@@ -44,7 +46,7 @@ We haven't enabled them yet. Sorry.
 - [ ] One special validator with different initial parameters
 - [ ] Monthly Report
 
-#### Balance
+### Balance
 - [ ] Inactivity penalty
 - [ ] Slashing
   - [ ] Whistleblower reward
@@ -52,7 +54,7 @@ We haven't enabled them yet. Sorry.
   - [ ] Slashed validator penalty
   - [ ] _Midway penalty_
 
-#### Validator
+### Validator
 - [ ] Validator exit
   - [ ] Balance ejection
   - [ ] Slasher ejection
@@ -60,17 +62,17 @@ We haven't enabled them yet. Sorry.
 - [ ] Validator activation
 - [ ] Account _top up_
 
-#### Tests
+### Tests
 - [ ] Attester incentives
 - [ ] process_epoch()
   - [ ] probability 1.0
   - [ ] probability 0.9
   - [ ] probability 0.5
 
-#### Docs
+### Docs
 - [ ] Inactivity penalty: assumptions.md
 - [ ] Slashing: assumptions.md
 
-### License
+## License
 
 * Apache 2.0.
