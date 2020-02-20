@@ -85,6 +85,7 @@ simulation -i 1000000 -p 0.95 -e 1000 -r epoch
   - [ ] Voluntary exit
 - [ ] Validator activation
 - [ ] Account _top up_
+- [ ] Validator Tiers (e.g. A to E) With different set of probabilities.
 
 ### Docs
 - [ ] Inactivity penalty: assumptions.md
