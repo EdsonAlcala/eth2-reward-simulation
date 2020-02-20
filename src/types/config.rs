@@ -17,8 +17,12 @@ pub const EFFECTIVE_BALANCE_INCREMENT: u64 = 1_000_000_000;
 #[derive(Debug)]
 pub struct Config {
     // what kind of reports are we producing here?
-    pub printing_output: String,
+    pub report_type: String,
 
+    pub output_file_name: String,
+    // what output format (json) // TODO add csv support
+    pub output_format: String,
+    
     // how many epochs we want to run?
     pub epochs: i32,
 
@@ -38,10 +42,10 @@ impl Config {
         // parse command line options
         let matches = App::new("Eth2 Reward Simulator")
             .arg(
-                Arg::with_name("initial_stake")
+                Arg::with_name("initial-stake")
                     .short("i")
-                    .long("initial_stake")
-                    .value_name("ETH")
+                    .long("initial-stake")
+                    .value_name("initial_stake")
                     .help("Your initial stake in ETH"),
             )
             .arg(
@@ -59,11 +63,25 @@ impl Config {
                     .help("A value in [0,1]"),
             )
             .arg(
-                Arg::with_name("printing_output")
+                Arg::with_name("report-type")
                     .short("r")
-                    .long("printing_output")
-                    .value_name("option")
+                    .long("report-type")
+                    .value_name("type")
                     .help("Type of report (epoch, monthly)"),
+            )
+            .arg(
+                Arg::with_name("output-file-name")
+                    .short("o")
+                    .long("output-file-file")
+                    .value_name("output-file-name")
+                    .help("Output results in a file")
+            )
+            .arg(
+                Arg::with_name("output-format")
+                    .short("f")
+                    .long("output-format")
+                    .value_name("output-format")
+                    .help("Output results format (json, csv)")
             )
             .get_matches();
 
@@ -96,9 +114,9 @@ impl Config {
             panic!("probability_online should be in the interval [0,1]");
         }
 
-        let printing_output = matches.value_of("printing_output").unwrap_or("epoch");
-        if printing_output != "epoch" && printing_output != "monthly" {
-            panic!("printing_output only supports 'epoch' or 'monthly'");
+        let report_type = matches.value_of("report-type").unwrap_or("epoch");
+        if report_type != "epoch" && report_type != "monthly" {
+            panic!("report type only supports 'epoch' or 'monthly'");
         }
 
         // stick to 1.0 for now
@@ -107,8 +125,18 @@ impl Config {
         // pre-computation
         let exp_value_inclusion_prob = Config::get_exp_value_inclusion_prob(probability_online);
 
+        // output format
+        let output_format = matches.value_of("output-format").unwrap_or("csv");
+        if output_format != "json" && output_format != "csv" {
+            panic!("the only available format is JSON and CSV");
+        }
+
+        let output_file_name = matches.value_of("output-file-name").unwrap_or("");
+        
         Config {
-            printing_output: printing_output.to_string(),
+            output_file_name: output_file_name.to_string(),
+            output_format: output_format.to_string(),
+            report_type: report_type.to_string(),
             epochs: epochs,
             total_at_stake_initial: initial_stake * 1_000_000_000,
             probability_online: probability_online,
