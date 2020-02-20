@@ -40,20 +40,17 @@ pub fn get_attestation_deltas(
 
         // inclusion rewards - proposer
         let proposer_reward_amount = base_reward / config::PROPOSER_REWARD_QUOTIENT;
-
         if proposer_indices.contains(validator_index) {
             let number_of_attesters = total_active_validators / 32;
             let number_of_attestations = (number_of_attesters as f32
                 * config.probability_online
                 * config.probability_honest)
                 .floor() as u64;
-
             deltas.proposer_reward = proposer_reward_amount * number_of_attestations;
         }
 
         // inclusion rewards - attester
         let maximum_attester_reward = base_reward - proposer_reward_amount;
-
         deltas.attester_reward =
             (maximum_attester_reward as f32 * config.exp_value_inclusion_prob).floor() as u64;
     }
@@ -73,14 +70,7 @@ mod tests {
     #[test]
     fn proposer_reward_validator_is_proposer() {
         let mut state = State::new();
-        let total_active_balance = state.get_total_active_balance();
-        let sqrt_total_active_balance = total_active_balance.integer_sqrt();
-        let total_active_validators = state.get_total_active_validators();
-        let matching_balance = state.get_matching_balance();
-        let base_reward = state.validators[0].get_base_reward(sqrt_total_active_balance);
         let mut deltas = Deltas::new();
-
-        // pick the 32 block proposers
         let mut dice = Dice::new();
         let mut proposer_indices = dice.pick_epoch_proposers(&state);
 
@@ -96,18 +86,14 @@ mod tests {
         get_attestation_deltas(
             &state.validators[0],
             &(0 as usize),
-            base_reward,
+            state.validators[0].get_base_reward(state.get_total_active_balance().integer_sqrt()),
             &state.config,
-            total_active_balance,
-            total_active_validators,
-            matching_balance,
+            state.get_total_active_balance(),
+            state.get_total_active_validators(),
+            state.get_matching_balance(),
             &proposer_indices,
             &mut deltas,
         );
-
-        // just a sanity check on the base values
-        assert_eq!(22_897, base_reward);
-        assert_eq!(15_625, total_active_validators);
 
         // the actual test
         assert_eq!(1_396_656, deltas.proposer_reward);
@@ -116,14 +102,7 @@ mod tests {
     #[test]
     fn proposer_reward_validator_is_not_proposer() {
         let mut state = State::new();
-        let total_active_balance = state.get_total_active_balance();
-        let sqrt_total_active_balance = total_active_balance.integer_sqrt();
-        let total_active_validators = state.get_total_active_validators();
-        let matching_balance = state.get_matching_balance();
-        let base_reward = state.validators[0].get_base_reward(sqrt_total_active_balance);
         let mut deltas = Deltas::new();
-
-        // pick the 32 block proposers
         let mut dice = Dice::new();
         let mut proposer_indices = dice.pick_epoch_proposers(&state);
 
@@ -141,11 +120,11 @@ mod tests {
         get_attestation_deltas(
             &state.validators[0],
             &(0 as usize),
-            base_reward,
+            state.validators[0].get_base_reward(state.get_total_active_balance().integer_sqrt()),
             &state.config,
-            total_active_balance,
-            total_active_validators,
-            matching_balance,
+            state.get_total_active_balance(),
+            state.get_total_active_validators(),
+            state.get_matching_balance(),
             &proposer_indices,
             &mut deltas,
         );
@@ -156,24 +135,28 @@ mod tests {
 
     #[test]
     fn attester_reward() {
-        /*
         let mut state = State::new();
-        let total_active_balance = state.get_total_active_balance();
-        let sqrt_total_active_balance = total_active_balance.integer_sqrt();
-        let total_active_validators = state.get_total_active_validators();
-        let matching_balance = state.get_matching_balance();
-        let base_reward = state.validators[0].get_base_reward(sqrt_total_active_balance);
         let mut deltas = Deltas::new();
-
-        // pick the 32 block proposers
         let mut dice = Dice::new();
-        let mut proposer_indices = dice.pick_epoch_proposers(&state);
 
         // arrange for our validator to be always online and honest
         state.config.probability_online = 1.0;
         state.config.probability_honest = 1.0;
 
-        // ...
-        */
+        // call get_attestation_deltas on your validators
+        get_attestation_deltas(
+            &state.validators[0],
+            &(0 as usize),
+            state.validators[0].get_base_reward(state.get_total_active_balance().integer_sqrt()),
+            &state.config,
+            state.get_total_active_balance(),
+            state.get_total_active_validators(),
+            state.get_matching_balance(),
+            &dice.pick_epoch_proposers(&state),
+            &mut deltas,
+        );
+
+        // the actual test
+        assert_eq!(19_934, deltas.attester_reward);
     }
 }

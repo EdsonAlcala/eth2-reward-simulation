@@ -86,13 +86,6 @@ simulation -i 1000000 -p 0.95 -e 1000 -r epoch
 - [ ] Validator activation
 - [ ] Account _top up_
 
-### Tests
-- [ ] Attester incentives
-- [ ] process_epoch()
-  - [ ] probability 1.0
-  - [ ] probability 0.9
-  - [ ] probability 0.5
-
 ### Docs
 - [ ] Inactivity penalty: assumptions.md
 - [ ] Slashing: assumptions.md
