@@ -90,6 +90,7 @@ impl Config {
             Ok(num) => num,
             Err(_) => 500_000,
         };
+        
         if initial_stake < 500_000 {
             panic!("initial_stake should be equal or greater than 500000")
         }
@@ -101,6 +102,7 @@ impl Config {
             Ok(num) => num,
             Err(_) => 10,
         };
+        
         if epochs < 1 {
             panic!("epoch should be a positive integer")
         }

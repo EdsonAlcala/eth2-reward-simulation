@@ -6,6 +6,10 @@
 use super::config::*;
 use super::deltas::Deltas;
 use serde::{Serialize};
+use std::error::Error;
+use std::fs::File;
+use std::io::prelude::*;
+use std::path::Path;
 
 const MONTHS_PER_YEAR: i32 = 12;
 
@@ -67,6 +71,16 @@ impl Output {
     }
 
     pub fn print_monthly_report(&self, config: &Config) {
+        let monthly_report = Output::get_monthly_report(&self.rows, config);
+
+        if config.output_format == "json" {       
+            Output::print_monthly_report_in_json(&monthly_report);
+        } else if config.output_format == "csv" {
+            Output::print_monthly_report_in_csv(&monthly_report);
+        }
+    }
+
+    fn get_monthly_report(rows: &Vec<EpochReportRow>, config: &Config) ->  Vec<MonthlyReportRow> {
         let epochs_per_year = config.epochs;
         let epochs_per_month = epochs_per_year / MONTHS_PER_YEAR;
 
@@ -78,7 +92,7 @@ impl Output {
         }
 
         for (index, item) in items_to_get.iter().enumerate() {
-            let current_item = &self.rows[*item as usize];
+            let current_item = rows[*item as usize];
             let network_percentage_rewards = Output::get_variation_percentage(
                 current_item.total_staked_balance,
                 config.total_at_stake_initial,
@@ -98,11 +112,7 @@ impl Output {
             });
         }
 
-        if config.output_format == "json" {       
-            Output::print_monthly_report_in_json(&monthly_report);
-        } else if config.output_format == "csv" {
-            Output::print_monthly_report_in_csv(&monthly_report);
-        }
+        monthly_report
     }
 
     fn print_monthly_report_in_csv(data: &Vec<MonthlyReportRow>) {
@@ -130,6 +140,34 @@ impl Output {
 
     fn get_penalties_variation_percentage(new_value: u64, old_value: u64) -> f64 {
         (new_value as f64 / old_value as f64) * 100f64
+    }
+
+    pub fn write_monthly_report_to_file(&self, config: &Config) {
+        let monthly_report = Output::get_monthly_report(&self.rows, config);
+
+        if config.output_format == "json" {       
+            // TODO Move to a method
+            let file_name = format!("{}.json", config.output_file_name);
+            let path = Path::new(&file_name);
+            let display = path.display();
+
+            // Open a file in write-only mode, returns `io::Result<File>`
+            let mut file = match File::create(&path) {
+                Err(why) => panic!("couldn't create {}: {}", display, why.description()),
+                Ok(file) => file,
+            };
+
+            let json_data = serde_json::to_string(&monthly_report)
+                .expect("Couldn't convert to JSON");
+
+            match file.write_all(json_data.as_bytes()) {
+                Err(why) => panic!("couldn't write to {}: {}", display, why.description()),
+                Ok(_) => println!("successfully wrote to {}", display),
+            }
+
+        } else if config.output_format == "csv" {
+            panic!("Not implemented method");
+        }
     }
 }
 

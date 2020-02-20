@@ -18,12 +18,15 @@ fn main() {
         state = process_epoch(state, i, &mut output);
     }
 
-    if state.config.report_type == "monthly" {
-        output.print_monthly_report(&state.config);
+    if state.config.report_type == "monthly" {        
+        if state.config.output_file_name.is_empty() {
+            output.print_monthly_report(&state.config);
+        } else {
+            output.write_monthly_report_to_file(&state.config);
+        }
     } else if state.config.report_type == "epoch" {
         output.print_epoch_report(&state.config);
     }
 
-    // Output::write_to_json(&monthly_report);
-
+    
 }
