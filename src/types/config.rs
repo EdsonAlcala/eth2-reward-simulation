@@ -128,9 +128,6 @@ impl Config {
     }
 }
 
-// TODO: Tests
-//   - Config::new()
-
 #[cfg(test)]
 mod tests {
     use super::*;
