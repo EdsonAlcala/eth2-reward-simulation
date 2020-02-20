@@ -18,7 +18,6 @@ pub fn process_epoch(pre_state: State, epoch_id: i32, output: &mut Output) -> St
     // start to record
     let mut epoch_report_row = EpochReportRow::new();
     epoch_report_row.epoch_id = epoch_id;
-
     let epoch_processing_start = Instant::now();
 
     let mut post_state_validators = vec![];
@@ -56,9 +55,11 @@ pub fn process_epoch(pre_state: State, epoch_id: i32, output: &mut Output) -> St
         // SPEC: process_final_updates update balances with hysteriesis
         new_validator.update_effective_balance();
 
-        epoch_report_row.aggregate(&deltas);
-
+        // your new validator gets added to the post_state
         post_state_validators.push(new_validator);
+
+        // and we aggregate the rewards and penalties in our records
+        epoch_report_row.aggregate(&deltas);
     }
 
     // build the new state and record its new totals
@@ -67,10 +68,13 @@ pub fn process_epoch(pre_state: State, epoch_id: i32, output: &mut Output) -> St
         validators: post_state_validators,
     };
 
+    // record and record
     epoch_report_row.total_staked_balance = post_state.get_total_staked_balance();
     epoch_report_row.total_effective_balance = post_state.get_total_active_balance();
-
-    // stop the timer, send the values to output
+    epoch_report_row.max_balance = post_state.get_max_balance();
+    epoch_report_row.min_balance = post_state.get_min_balance();
+    epoch_report_row.total_validators = post_state.validators.len() as u64;
+    epoch_report_row.total_active_validators = post_state.get_total_active_validators();
     epoch_report_row.time_elapsed = epoch_processing_start.elapsed().as_micros();
     output.push(epoch_report_row);
 

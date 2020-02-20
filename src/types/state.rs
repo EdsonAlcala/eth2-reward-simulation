@@ -77,6 +77,20 @@ impl State {
             })
             .sum()
     }
+
+    pub fn get_max_balance(&self) -> u64 {
+        self.validators
+            .iter()
+            .map(|v: &Validator| v.balance)
+            .fold(0, std::cmp::max)
+    }
+
+    pub fn get_min_balance(&self) -> u64 {
+        self.validators
+            .iter()
+            .map(|v: &Validator| v.balance)
+            .fold(std::u64::MAX, std::cmp::min)
+    }
 }
 
 // TODO: Test
@@ -85,3 +99,5 @@ impl State {
 // - State::get_total_active_balance()
 // - State::get_total_active_validators()
 // - State::get_matching_balance()
+// - State::get_max_balance()
+// - State::get_min_balance()

@@ -26,7 +26,7 @@ impl Output {
     pub fn print_epoch_report(&self, mode: &str) {
         if mode == "csv" {
             println!(
-                "{},{},{},{},{},{},{},{}",
+                "{},{},{},{},{},{},{},{},{},{},{},{}",
                 "epoch number".to_string(),
                 "FFG rewards".to_string(),
                 "FFG penalties".to_string(),
@@ -34,12 +34,16 @@ impl Output {
                 "attester rewards".to_string(),
                 "total staked balance".to_string(),
                 "total effective balance".to_string(),
+                "max balance".to_string(),
+                "min balance".to_string(),
+                "total validators".to_string(),
+                "total active validatos".to_string(),
                 "time μs".to_string(),
             );
 
             for row in &self.rows {
                 println!(
-                    "{},{},{},{},{},{},{},{}",
+                    "{},{},{},{},{},{},{},{},{},{},{},{}",
                     row.epoch_id,
                     row.deltas_head_ffg_rewards,
                     row.deltas_head_ffg_penalties,
@@ -47,6 +51,10 @@ impl Output {
                     row.deltas_attester_rewards,
                     row.total_staked_balance,
                     row.total_effective_balance,
+                    row.max_balance,
+                    row.min_balance,
+                    row.total_validators,
+                    row.total_active_validators,
                     row.time_elapsed,
                 );
             }
@@ -117,6 +125,10 @@ pub struct EpochReportRow {
 
     pub total_staked_balance: u64,
     pub total_effective_balance: u64,
+    pub max_balance: u64,
+    pub min_balance: u64,
+    pub total_validators: u64,
+    pub total_active_validators: u64,
 
     pub time_elapsed: u128,
 }
@@ -133,6 +145,10 @@ impl EpochReportRow {
 
             total_staked_balance: 0,
             total_effective_balance: 0,
+            max_balance: 0,
+            min_balance: 0,
+            total_validators: 0,
+            total_active_validators: 0,
 
             time_elapsed: 0,
         }
