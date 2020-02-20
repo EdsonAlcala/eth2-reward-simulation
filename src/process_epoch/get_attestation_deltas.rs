@@ -142,6 +142,7 @@ mod tests {
         // arrange for our validator to be always online and honest
         state.config.probability_online = 1.0;
         state.config.probability_honest = 1.0;
+        state.config.exp_value_inclusion_prob = 1.0;
 
         // call get_attestation_deltas on your validators
         get_attestation_deltas(
@@ -157,6 +158,6 @@ mod tests {
         );
 
         // the actual test
-        assert_eq!(19_934, deltas.attester_reward);
+        assert_eq!(20_035, deltas.attester_reward);
     }
 }
