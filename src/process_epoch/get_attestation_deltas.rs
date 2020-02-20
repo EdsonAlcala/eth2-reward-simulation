@@ -56,16 +56,133 @@ pub fn get_attestation_deltas(
     }
 }
 
-// TODO: Tests
-// - attester reward
-// - non elegible validator
-// - slashed validator
-// - FFG rewards
-
 #[cfg(test)]
 mod tests {
     use super::*;
     use integer_sqrt::IntegerSquareRoot;
+
+    #[test]
+    fn non_eligible_validator() {
+        let mut state = State::new();
+        let mut deltas = Deltas::new();
+        let mut dice = Dice::new();
+
+        // our validator was not active last epoch
+        state.validators[0].is_active = false;
+
+        // call get_attestation_deltas on your validators
+        get_attestation_deltas(
+            &state.validators[0],
+            &(0 as usize),
+            state.validators[0].get_base_reward(state.get_total_active_balance().integer_sqrt()),
+            &state.config,
+            state.get_total_active_balance(),
+            state.get_total_active_validators(),
+            state.get_matching_balance(),
+            &dice.pick_epoch_proposers(&state),
+            &mut deltas,
+        );
+
+        assert_eq!(0, deltas.head_ffg_reward);
+        assert_eq!(0, deltas.head_ffg_penalty);
+        assert_eq!(0, deltas.proposer_reward);
+        assert_eq!(0, deltas.attester_reward);
+    }
+
+    #[test]
+    fn slashed_validator() {
+        let mut state = State::new();
+        let mut deltas = Deltas::new();
+        let mut dice = Dice::new();
+
+        let base_reward =
+            state.validators[0].get_base_reward(state.get_total_active_balance().integer_sqrt());
+
+        // our validator was not active last epoch
+        state.validators[0].is_slashed = true;
+
+        // call get_attestation_deltas on your validators
+        get_attestation_deltas(
+            &state.validators[0],
+            &(0 as usize),
+            base_reward,
+            &state.config,
+            state.get_total_active_balance(),
+            state.get_total_active_validators(),
+            state.get_matching_balance(),
+            &dice.pick_epoch_proposers(&state),
+            &mut deltas,
+        );
+
+        assert_eq!(0, deltas.head_ffg_reward);
+        assert_eq!(3 * base_reward, deltas.head_ffg_penalty);
+        assert_eq!(0, deltas.proposer_reward);
+        assert_eq!(0, deltas.attester_reward);
+    }
+
+    #[test]
+    fn ffg_rewards_1() {
+        let mut state = State::new();
+        let mut deltas = Deltas::new();
+        let mut dice = Dice::new();
+
+        let base_reward =
+            state.validators[0].get_base_reward(state.get_total_active_balance().integer_sqrt());
+
+        state.validators[0].is_active = true;
+        state.validators[0].is_slashed = false;
+        state.config.probability_online = 1.0;
+        state.config.probability_honest = 1.0;
+
+        // call get_attestation_deltas on your validators
+        get_attestation_deltas(
+            &state.validators[0],
+            &(0 as usize),
+            base_reward,
+            &state.config,
+            state.get_total_active_balance(),
+            state.get_total_active_validators(),
+            state.get_matching_balance(),
+            &dice.pick_epoch_proposers(&state),
+            &mut deltas,
+        );
+
+        assert_eq!(3 * base_reward, deltas.head_ffg_reward);
+        assert_eq!(0, deltas.head_ffg_penalty);
+    }
+
+    #[test]
+    fn ffg_rewards_2() {
+        let mut state = State::new();
+        let mut deltas = Deltas::new();
+        let mut dice = Dice::new();
+
+        let base_reward =
+            state.validators[0].get_base_reward(state.get_total_active_balance().integer_sqrt());
+
+        state.validators[0].is_active = true;
+        state.validators[0].is_slashed = false;
+        state.config.probability_online = 1.0;
+        state.config.probability_honest = 1.0;
+        let matching_balance = 2 * state.get_total_active_balance() / 3;
+
+        // call get_attestation_deltas on your validators
+        get_attestation_deltas(
+            &state.validators[0],
+            &(0 as usize),
+            base_reward,
+            &state.config,
+            state.get_total_active_balance(),
+            state.get_total_active_validators(),
+            matching_balance,
+            &dice.pick_epoch_proposers(&state),
+            &mut deltas,
+        );
+
+        // accounting for rounding errors (there must be a better way!    )
+        assert_eq!(2 * base_reward / 10, deltas.head_ffg_reward / 10);
+        assert_eq!(0, deltas.head_ffg_penalty);
+    }
 
     #[test]
     fn proposer_reward_validator_is_proposer() {
@@ -82,7 +199,6 @@ mod tests {
         state.config.probability_online = 1.0;
         state.config.probability_honest = 1.0;
 
-        // call get_attestation_deltas on your validators
         get_attestation_deltas(
             &state.validators[0],
             &(0 as usize),
@@ -95,7 +211,6 @@ mod tests {
             &mut deltas,
         );
 
-        // the actual test
         assert_eq!(1_396_656, deltas.proposer_reward);
     }
 
@@ -116,7 +231,6 @@ mod tests {
         state.config.probability_online = 1.0;
         state.config.probability_honest = 1.0;
 
-        // call get_attestation_deltas on your validators
         get_attestation_deltas(
             &state.validators[0],
             &(0 as usize),
@@ -129,7 +243,6 @@ mod tests {
             &mut deltas,
         );
 
-        // the actual test
         assert_eq!(0, deltas.proposer_reward);
     }
 
@@ -144,7 +257,6 @@ mod tests {
         state.config.probability_honest = 1.0;
         state.config.exp_value_inclusion_prob = 1.0;
 
-        // call get_attestation_deltas on your validators
         get_attestation_deltas(
             &state.validators[0],
             &(0 as usize),
@@ -157,7 +269,6 @@ mod tests {
             &mut deltas,
         );
 
-        // the actual test
         assert_eq!(20_035, deltas.attester_reward);
     }
 }
