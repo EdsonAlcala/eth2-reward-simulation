@@ -63,7 +63,8 @@ mod tests {
 
     #[test]
     fn non_eligible_validator() {
-        let mut state = State::new();
+        let config = Config::new();
+        let mut state = State::new(config);
         let mut deltas = Deltas::new();
         let mut dice = Dice::new();
 
@@ -91,7 +92,8 @@ mod tests {
 
     #[test]
     fn slashed_validator() {
-        let mut state = State::new();
+        let config = Config::new();
+        let mut state = State::new(config);
         let mut deltas = Deltas::new();
         let mut dice = Dice::new();
 
@@ -122,7 +124,8 @@ mod tests {
 
     #[test]
     fn ffg_rewards_1() {
-        let mut state = State::new();
+        let config = Config::new();
+        let mut state = State::new(config);
         let mut deltas = Deltas::new();
         let mut dice = Dice::new();
 
@@ -153,7 +156,8 @@ mod tests {
 
     #[test]
     fn ffg_rewards_2() {
-        let mut state = State::new();
+        let config = Config::new();
+        let mut state = State::new(config);
         let mut deltas = Deltas::new();
         let mut dice = Dice::new();
 
@@ -186,7 +190,8 @@ mod tests {
 
     #[test]
     fn proposer_reward_validator_is_proposer() {
-        let mut state = State::new();
+        let config = Config::new();
+        let mut state = State::new(config);
         let mut deltas = Deltas::new();
         let mut dice = Dice::new();
         let mut proposer_indices = dice.pick_epoch_proposers(&state);
@@ -216,7 +221,9 @@ mod tests {
 
     #[test]
     fn proposer_reward_validator_is_not_proposer() {
-        let mut state = State::new();
+        let config = Config::new();
+        let mut state = State::new(config);
+
         let mut deltas = Deltas::new();
         let mut dice = Dice::new();
         let mut proposer_indices = dice.pick_epoch_proposers(&state);
@@ -248,7 +255,8 @@ mod tests {
 
     #[test]
     fn attester_reward() {
-        let mut state = State::new();
+        let config = Config::new();
+        let mut state = State::new(config);
         let mut deltas = Deltas::new();
         let mut dice = Dice::new();
 

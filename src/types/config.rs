@@ -69,7 +69,7 @@ impl Config {
                     .short("p")
                     .long("probability-online")
                     .value_name("p")
-                    .help("A value in [0,1]"),
+                    .help("A value in [0,1] or multiple values separated by comma"),
             )
             .arg(
                 Arg::with_name("report-type")
@@ -113,8 +113,7 @@ impl Config {
         if final_stake > 10_000_000 {
             panic!("final_stake should be less than 10 000 000")
         }
-
-        let number_of_simulations = final_stake / initial_stake;
+        
         // ideal default: 81_125 = (60 * 60 * 24 * 365)/(12 * 32)
         // current default 10
         let epochs = matches.value_of("epochs").unwrap_or("10");
@@ -127,14 +126,11 @@ impl Config {
             panic!("epoch should be a positive integer")
         }
 
-        let probability_online = matches.value_of("probability-online").unwrap_or("0.99");
-        let probability_online: f32 = match probability_online.trim().parse() {
-            Ok(num) => num,
-            Err(_) => 0.99,
-        };
-        if probability_online < 0.0 || probability_online > 1.0 {
-            panic!("probability online should be in the interval [0,1]");
-        }
+        let probability_online_parameter = matches.value_of("probability-online").unwrap_or("0.99");       
+        let probabilities_online = get_probabilities_from_string(probability_online_parameter);
+
+        let number_of_simulations = (final_stake / initial_stake) * probabilities_online.len();
+        println!("Number of simulations {}", number_of_simulations);
 
         let report_type = matches.value_of("report-type").unwrap_or("epoch");
         if report_type != "epoch" && report_type != "monthly" {
@@ -145,7 +141,7 @@ impl Config {
         let probability_honest: f32 = 1.0;
 
         // pre-computation
-        let exp_value_inclusion_prob = Config::get_exp_value_inclusion_prob(probability_online);
+        let exp_value_inclusion_prob = Config::get_exp_value_inclusion_prob(0.99);
 
         // output format
         let output_format = matches.value_of("output-format").unwrap_or("csv");
@@ -178,6 +174,30 @@ impl Config {
             p * p.ln() / (p - 1.00)
         }
     }
+
+    fn get_probabilities_from_string(value: String) -> Vec<f32> {
+        let mut probabilities_splitted = value.split(",");
+        let mut probabilities_online: Vec<f32> = vec![];
+
+        for probability in probabilities_splitted {
+            let current_probability = match probability.trim().parse() {
+                Ok(num) => num,
+                Err(_) => 0.99,
+            };
+
+            if current_probability < 0.0 || current_probability > 1.0 {
+                panic!("probability online should be in the interval [0,1]");
+            }
+            println!("Current probability {}", current_probability);
+
+            probabilities_online.push(current_probability);
+        }
+        probabilities_online
+    }
+
+    // fn get_number_of_simulations(value: String) -> Vec<> {
+    //     10
+    // }
 }
 
 #[cfg(test)]
@@ -210,5 +230,12 @@ mod tests {
 
     fn truncate_two(number: f32) -> f32 {
         (number * 100.0).floor() / 100.0
+    }
+
+    #[test]
+    fn it_should_get_probabilities_from_string(){
+        let result = Output::get_probabilities_from_string("8,9,10");
+
+        assert_eq!(result.len(), 3); 
     }
 }
