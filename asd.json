@@ -1,0 +1,74 @@
+[
+    {
+        "month_number": 1,
+        "network_percentage_rewards": 0.0194620996912,
+        "network_percentage_penalties": 0.0,
+        "network_percentage_net_rewards": 0.0194620996912
+    },
+    {
+        "month_number": 2,
+        "network_percentage_rewards": 0.038637992034,
+        "network_percentage_penalties": 0.0,
+        "network_percentage_net_rewards": 0.038637992034
+    },
+    {
+        "month_number": 3,
+        "network_percentage_rewards": 0.0578138843768,
+        "network_percentage_penalties": 0.0,
+        "network_percentage_net_rewards": 0.0578138843768
+    },
+    {
+        "month_number": 4,
+        "network_percentage_rewards": 0.0769897767196,
+        "network_percentage_penalties": 0.0,
+        "network_percentage_net_rewards": 0.0769897767196
+    },
+    {
+        "month_number": 5,
+        "network_percentage_rewards": 0.0961656690624,
+        "network_percentage_penalties": 0.0,
+        "network_percentage_net_rewards": 0.0961656690624
+    },
+    {
+        "month_number": 6,
+        "network_percentage_rewards": 0.11534156140520001,
+        "network_percentage_penalties": 0.0,
+        "network_percentage_net_rewards": 0.11534156140520001
+    },
+    {
+        "month_number": 7,
+        "network_percentage_rewards": 0.134517453748,
+        "network_percentage_penalties": 0.0,
+        "network_percentage_net_rewards": 0.134517453748
+    },
+    {
+        "month_number": 8,
+        "network_percentage_rewards": 0.1536933460908,
+        "network_percentage_penalties": 0.0,
+        "network_percentage_net_rewards": 0.1536933460908
+    },
+    {
+        "month_number": 9,
+        "network_percentage_rewards": 0.1728692384336,
+        "network_percentage_penalties": 0.0,
+        "network_percentage_net_rewards": 0.1728692384336
+    },
+    {
+        "month_number": 10,
+        "network_percentage_rewards": 0.19204513077639998,
+        "network_percentage_penalties": 0.0,
+        "network_percentage_net_rewards": 0.19204513077639998
+    },
+    {
+        "month_number": 11,
+        "network_percentage_rewards": 0.2112210231192,
+        "network_percentage_penalties": 0.0,
+        "network_percentage_net_rewards": 0.2112210231192
+    },
+    {
+        "month_number": 12,
+        "network_percentage_rewards": 0.23039691546199997,
+        "network_percentage_penalties": 0.0,
+        "network_percentage_net_rewards": 0.23039691546199997
+    }
+]

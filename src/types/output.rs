@@ -15,17 +15,27 @@ const MONTHS_PER_YEAR: i32 = 12;
 
 pub struct Output {
     pub rows: Vec<EpochReportRow>,
+    pub monthly_rows: Vec<MonthlyReportRow>
 }
 
 impl Output {
     pub fn new() -> Output {
         let rows = vec![];
+        let monthly_rows = vec![];
 
-        Output { rows: rows }
+        Output { rows: rows, monthly_rows: monthly_rows }
     }
 
     pub fn push(&mut self, row: EpochReportRow) {
         self.rows.push(row);
+    }
+
+    pub fn get_rows(&self) -> Vec<EpochReportRow> {
+        self.rows.clone()
+    }
+
+    pub fn add_row_items(&mut self, rows: Vec<MonthlyReportRow>) {
+        self.monthly_rows.extend_from_slice(&rows);
     }
 
     pub fn print_epoch_report(&self, config: &Config) {
@@ -71,7 +81,7 @@ impl Output {
     }
 
     pub fn print_monthly_report(&self, config: &Config) {
-        let monthly_report = Output::get_monthly_report(&self.rows, config);
+        let monthly_report = Output::get_monthly_report(&self, config);
 
         if config.output_format == "json" {       
             Output::print_monthly_report_in_json(&monthly_report);
@@ -80,7 +90,7 @@ impl Output {
         }
     }
 
-    fn get_monthly_report(rows: &Vec<EpochReportRow>, config: &Config) ->  Vec<MonthlyReportRow> {
+    pub fn get_monthly_report(&self, config: &Config) ->  Vec<MonthlyReportRow> {
         let epochs_per_year = config.epochs;
         let epochs_per_month = epochs_per_year / MONTHS_PER_YEAR;
 
@@ -92,7 +102,7 @@ impl Output {
         }
 
         for (index, item) in items_to_get.iter().enumerate() {
-            let current_item = rows[*item as usize];
+            let current_item = &self.rows[*item as usize];
             let network_percentage_rewards = Output::get_variation_percentage(
                 current_item.total_staked_balance,
                 config.total_at_stake_initial,
@@ -143,7 +153,7 @@ impl Output {
     }
 
     pub fn write_monthly_report_to_file(&self, config: &Config) {
-        let monthly_report = Output::get_monthly_report(&self.rows, config);
+        let monthly_report = Output::get_monthly_report(&self, config);
 
         if config.output_format == "json" {       
             // TODO Move to a method
@@ -162,7 +172,7 @@ impl Output {
 
             match file.write_all(json_data.as_bytes()) {
                 Err(why) => panic!("couldn't write to {}: {}", display, why.description()),
-                Ok(_) => println!("successfully wrote to {}", display),
+                Ok(_) => println!("Successfully wrote to {}", display),
             }
 
         } else if config.output_format == "csv" {
