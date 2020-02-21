@@ -14,7 +14,7 @@ pub const BASE_REWARDS_PER_EPOCH: u64 = 4;
 pub const PROPOSER_REWARD_QUOTIENT: u64 = 8;
 pub const EFFECTIVE_BALANCE_INCREMENT: u64 = 1_000_000_000;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct Config {
     // what kind of reports are we producing here?
     pub report_type: String,
