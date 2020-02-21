@@ -17,9 +17,7 @@ pub struct State {
 }
 
 impl State {
-    pub fn new() -> State {
-        let config = config::Config::new();
-
+    pub fn new(config: config::Config) -> State {
         let number_of_validators = config.total_at_stake_initial / config::MAX_EFFECTIVE_BALANCE;
         let mut validators = vec![];
 
