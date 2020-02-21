@@ -6,24 +6,18 @@
 use super::config::*;
 use super::deltas::Deltas;
 use serde::{Serialize};
-use std::error::Error;
-use std::fs::File;
-use std::io::prelude::*;
-use std::path::Path;
 
 const MONTHS_PER_YEAR: i32 = 12;
 
 pub struct Output {
     pub rows: Vec<EpochReportRow>,
-    pub monthly_rows: Vec<MonthlyReportRow>
 }
 
 impl Output {
     pub fn new() -> Output {
         let rows = vec![];
-        let monthly_rows = vec![];
 
-        Output { rows: rows, monthly_rows: monthly_rows }
+        Output { rows: rows }
     }
 
     pub fn push(&mut self, row: EpochReportRow) {
@@ -32,10 +26,6 @@ impl Output {
 
     pub fn get_rows(&self) -> Vec<EpochReportRow> {
         self.rows.clone()
-    }
-
-    pub fn add_row_items(&mut self, rows: Vec<MonthlyReportRow>) {
-        self.monthly_rows.extend_from_slice(&rows);
     }
 
     pub fn print_epoch_report(&self, config: &Config) {
@@ -150,34 +140,6 @@ impl Output {
 
     fn get_penalties_variation_percentage(new_value: u64, old_value: u64) -> f64 {
         (new_value as f64 / old_value as f64) * 100f64
-    }
-
-    pub fn write_monthly_report_to_file(&self, config: &Config) {
-        let monthly_report = Output::get_monthly_report(&self, config);
-
-        if config.output_format == "json" {       
-            // TODO Move to a method
-            let file_name = format!("{}.json", config.output_file_name);
-            let path = Path::new(&file_name);
-            let display = path.display();
-
-            // Open a file in write-only mode, returns `io::Result<File>`
-            let mut file = match File::create(&path) {
-                Err(why) => panic!("couldn't create {}: {}", display, why.description()),
-                Ok(file) => file,
-            };
-
-            let json_data = serde_json::to_string(&monthly_report)
-                .expect("Couldn't convert to JSON");
-
-            match file.write_all(json_data.as_bytes()) {
-                Err(why) => panic!("couldn't write to {}: {}", display, why.description()),
-                Ok(_) => println!("Successfully wrote to {}", display),
-            }
-
-        } else if config.output_format == "csv" {
-            panic!("Not implemented method");
-        }
     }
 }
 
