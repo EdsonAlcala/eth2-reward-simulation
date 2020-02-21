@@ -6,17 +6,19 @@
 
 mod process_epoch;
 mod types;
-mod simulator_engine;
+mod simulator;
+mod exporter;
 
 use config::Config;
 use types::*;
-use simulator_engine::start_simulation;
+use simulator::start_simulation;
 use std::thread;
 use std::sync::mpsc;
+use exporter::file_exporter::FileExporter;
 
 fn main() {
     let config: Config = Config::new();
-    let mut final_output = Output::new();
+    let mut file_exporter = FileExporter::new();
     let (tx, rx) = mpsc::channel();
     let job_count = 2; // TODO CALCULATE BASED ON PARAMETERS
     
@@ -30,20 +32,23 @@ fn main() {
     }  
 
     for _i in 0..job_count {
-        let output_result = rx.recv().unwrap();
+        let simulation_result = rx.recv().unwrap();
 
-        if config.report_type == "monthly" {        
+        if config.report_type == "monthly" { // TODO Refactor      
             if config.output_file_name.is_empty() {
-                final_output.print_monthly_report(&config);
+                simulation_result.print_monthly_report(&config);
             } else {
-                let monthly_report_chunk = output_result.get_monthly_report(&config);
-                final_output.add_row_items(monthly_report_chunk);
-                final_output.write_monthly_report_to_file(&config);
+                let monthly_report_chunk = simulation_result.get_monthly_report(&config);
+                file_exporter.add_items(monthly_report_chunk);
             }
         } else if config.report_type == "epoch" {
-            final_output.print_epoch_report(&config);
+            simulation_result.print_epoch_report(&config);
         }
     }
 
-    println!("Elements in output {}", final_output.get_rows().len());
+    if config.report_type == "monthly" { // TODO Refactor
+        if !config.output_file_name.is_empty() {
+            file_exporter.export_to_file(&config);
+        }
+    }
 }
