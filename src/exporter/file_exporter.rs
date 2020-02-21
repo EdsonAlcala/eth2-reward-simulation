@@ -16,10 +16,6 @@ impl FileExporter {
         FileExporter { rows: rows }
     }
 
-    pub fn add_record(&mut self, row: MonthlyReportRow) {
-        self.rows.push(row);
-    }
-
     pub fn add_items(&mut self, rows: Vec<MonthlyReportRow>) {
         self.rows.extend_from_slice(&rows);
     }

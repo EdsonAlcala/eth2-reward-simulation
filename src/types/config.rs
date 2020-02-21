@@ -14,7 +14,7 @@ pub const BASE_REWARDS_PER_EPOCH: u64 = 4;
 pub const PROPOSER_REWARD_QUOTIENT: u64 = 8;
 pub const EFFECTIVE_BALANCE_INCREMENT: u64 = 1_000_000_000;
 
-#[derive(Debug, Clone)]
+#[derive(Debug,Clone)]
 pub struct Config {
     // what kind of reports are we producing here?
     pub report_type: String,
@@ -28,6 +28,8 @@ pub struct Config {
 
     // how much ETH we want to start with?
     pub total_at_stake_initial: u64,
+    pub final_stake: u64,
+    pub number_of_simulations: u64,
 
     // probabilities of any validator
     pub probability_online: f32,
@@ -49,6 +51,13 @@ impl Config {
                     .help("Your initial stake in ETH"),
             )
             .arg(
+                Arg::with_name("final-stake")
+                    .short("s")
+                    .long("final-stake")
+                    .value_name("final_stake")
+                    .help("Your final stake in ETH"),
+            )
+            .arg(
                 Arg::with_name("epochs")
                     .short("e")
                     .long("epochs")
@@ -56,9 +65,9 @@ impl Config {
                     .help("Epochs to run"),
             )
             .arg(
-                Arg::with_name("probability_online")
+                Arg::with_name("probability-online")
                     .short("p")
-                    .long("probability_online")
+                    .long("probability-online")
                     .value_name("p")
                     .help("A value in [0,1]"),
             )
@@ -72,7 +81,7 @@ impl Config {
             .arg(
                 Arg::with_name("output-file-name")
                     .short("o")
-                    .long("output-file-file")
+                    .long("output-file-name")
                     .value_name("output-file-name")
                     .help("Output results in a file")
             )
@@ -85,16 +94,27 @@ impl Config {
             )
             .get_matches();
 
-        let initial_stake = matches.value_of("initial_stake").unwrap_or("500000");
+        let initial_stake = matches.value_of("initial-stake").unwrap_or("500000"); // TODO MAKE Enum
         let initial_stake: u64 = match initial_stake.trim().parse() {
             Ok(num) => num,
             Err(_) => 500_000,
         };
         
-        if initial_stake < 500_000 {
+        if initial_stake < 500_000 { // TODO and multiple of 500,000
             panic!("initial_stake should be equal or greater than 500000")
         }
 
+        let final_stake = matches.value_of("final-stake").unwrap_or("10000000"); // TODO MAKE Enum
+        let final_stake: u64 = match final_stake.trim().parse() {
+            Ok(num) => num,
+            Err(_) => 10_000_000, // TODO, here should panic
+        };
+        
+        if final_stake > 10_000_000 {
+            panic!("final_stake should be less than 10 000 000")
+        }
+
+        let number_of_simulations = final_stake / initial_stake;
         // ideal default: 81_125 = (60 * 60 * 24 * 365)/(12 * 32)
         // current default 10
         let epochs = matches.value_of("epochs").unwrap_or("10");
@@ -107,13 +127,13 @@ impl Config {
             panic!("epoch should be a positive integer")
         }
 
-        let probability_online = matches.value_of("probability_online").unwrap_or("0.99");
+        let probability_online = matches.value_of("probability-online").unwrap_or("0.99");
         let probability_online: f32 = match probability_online.trim().parse() {
             Ok(num) => num,
             Err(_) => 0.99,
         };
         if probability_online < 0.0 || probability_online > 1.0 {
-            panic!("probability_online should be in the interval [0,1]");
+            panic!("probability online should be in the interval [0,1]");
         }
 
         let report_type = matches.value_of("report-type").unwrap_or("epoch");
@@ -144,6 +164,8 @@ impl Config {
             probability_online: probability_online,
             probability_honest: probability_honest,
             exp_value_inclusion_prob: exp_value_inclusion_prob,
+            final_stake: final_stake * 1_000_000_000,
+            number_of_simulations: number_of_simulations
         }
     }
 

@@ -20,35 +20,38 @@ fn main() {
     let config: Config = Config::new();
     let mut file_exporter = FileExporter::new();
     let (tx, rx) = mpsc::channel();
-    let job_count = 2; // TODO CALCULATE BASED ON PARAMETERS
-    
-    for i in 0..job_count {
+
+    for i in 0..config.number_of_simulations {
         let tx = tx.clone();
-        let config = config.clone();
+        let mut config = config.clone();
+        config.total_at_stake_initial = (i + 1 ) * 1_000_000 * 1_000_000_000; // TODO FIX THIS
+        let config_copy = config.clone();
+
         thread::spawn(move || {
-            let result = start_simulation(config);
-            tx.send(result).unwrap();
+            let simulation_result = start_simulation(config);
+
+            if config_copy.report_type == "monthly" { // TODO Refactor      
+                if config_copy.output_file_name.is_empty() {
+                    simulation_result.print_monthly_report(&config_copy);
+                } else {
+                    let monthly_report_chunk = simulation_result.get_monthly_report(&config_copy);
+                    tx.send(monthly_report_chunk).unwrap();
+                }
+            } else if config_copy.report_type == "epoch" {
+                simulation_result.print_epoch_report(&config_copy);
+            }
+    
         });
     }  
 
-    for _i in 0..job_count {
+    for _i in 0..config.number_of_simulations {
         let simulation_result = rx.recv().unwrap();
-
-        if config.report_type == "monthly" { // TODO Refactor      
-            if config.output_file_name.is_empty() {
-                simulation_result.print_monthly_report(&config);
-            } else {
-                let monthly_report_chunk = simulation_result.get_monthly_report(&config);
-                file_exporter.add_items(monthly_report_chunk);
-            }
-        } else if config.report_type == "epoch" {
-            simulation_result.print_epoch_report(&config);
-        }
+        file_exporter.add_items(simulation_result);
     }
 
     if config.report_type == "monthly" { // TODO Refactor
         if !config.output_file_name.is_empty() {
-            file_exporter.export_to_file(&config);
+            file_exporter.export_to_file(&config); // I SHOULDN"T PASS THE WHOLE OBJECT
         }
     }
 }

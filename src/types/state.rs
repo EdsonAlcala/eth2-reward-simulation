@@ -18,7 +18,9 @@ pub struct State {
 
 impl State {
     pub fn new(config: config::Config) -> State {
+        // println!("config.total_at_stake_initial STATE {}", config.total_at_stake_initial);
         let number_of_validators = config.total_at_stake_initial / config::MAX_EFFECTIVE_BALANCE;
+        // println!("Number of validators {}", number_of_validators);
         let mut validators = vec![];
 
         for _ in 0..number_of_validators {

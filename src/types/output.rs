@@ -24,10 +24,6 @@ impl Output {
         self.rows.push(row);
     }
 
-    pub fn get_rows(&self) -> Vec<EpochReportRow> {
-        self.rows.clone()
-    }
-
     pub fn print_epoch_report(&self, config: &Config) {
         if config.output_format == "csv" { 
             Output::print_epoch_report_in_csv(&self.rows);
@@ -106,6 +102,7 @@ impl Output {
 
             monthly_report.push(MonthlyReportRow {
                 month_number: index as u32 + 1u32,
+                initial_staked_balance: config.total_at_stake_initial / 1_000_000_000,
                 network_percentage_rewards: network_percentage_rewards,
                 network_percentage_penalties: network_percentage_penalties,
                 network_percentage_net_rewards: network_percentage_net_rewards,
@@ -145,6 +142,7 @@ impl Output {
 
 #[derive(Copy, Clone, Serialize)]
 pub struct MonthlyReportRow {
+    pub initial_staked_balance: u64,
     pub month_number: u32,
     pub network_percentage_rewards: f64,
     pub network_percentage_penalties: f64,
